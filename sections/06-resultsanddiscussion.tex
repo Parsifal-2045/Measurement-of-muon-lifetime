@@ -1,0 +1,53 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Results and Discussion}
+
+\lipsum[5]
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=1]{"figure"}
+\caption{Figure caption}
+\label{figure label}
+\end{figure}
+
+{\LaTeX} note: you can refer to a figure or other item using the \textbackslash ref command as follows: Figure \ref{figure label}.
+
+\bgroup
+\def\arraystretch{1}
+\begin{table}[htbp]
+\caption{Table caption}
+\begin{center}
+\begin{tabular}{c c c c c}
+\hline
+&Parameter 1&Parameter 2&Parameter 3&Parameter 4 \\
+&(Units)&(Units)&(Units)&(Units) \\ \hline
+Variable x& xx.x$^a$ $\pm$ x& xx. x$\pm$ x&xx. xa $\pm$ x& xx. x$\pm$ x\\
+Variable Y & x.x$^b$ $\pm$ x& x.x$\pm$ x& x.x$^b$ $\pm$ x& x.x$\pm$ x\\
+Variable Z & .xxx$\pm$ x& .xxx$\pm$ x& .xxx$\pm$ x& .xxx$\pm$ x\\ \hline
+\multicolumn{5}{l}{$^a$ Significantly different from variable Y (p \textless 0.05)} \\
+\multicolumn{5}{l}{$^b$ Significantly different from variable X (p \textless 0.05)} \\ \hline
+\end{tabular}
+\end{center}
+\label{table example}
+\end{table}
+\egroup
+
+In {\LaTeX}, there are several different options for creating tables:
+\begin{enumerate}
+\item Create the table by hand, using ``\&" symbols to skip to the next column. This is pretty tedious. In the example table (Table \ref{table example}), the code containing ``\{c c c c c\}" indicates that there will be five columns with the text inside centered. If we wanted borders between our columns we would write ``\{$\vert$ c $\vert$ c $\vert$ c $\vert$ c $\vert$ c $\vert$\}".
+%the \vert symbols were needed to make this line display properly in the pdf. the actual code is {|c | c | c | c | c |}
+
+\item Paste from Excel into, for example, Notepad, and use find and replace to replace tab characters with \& symbols. This allows a large table to be created quickly.
+
+\item There are Excel plugins that will automatically export {\LaTeX} code for you. For example: https://www.ctan.org/tex-archive/support/excel2latex/
+
+\item There are online tools that can generate {\LaTeX} code by copy / pasting Excel data. For example: https://www.tablesgenerator.com/latex\_tables
+
+\item Finally, one last option is to create the table in Excel, save it as an image or pdf and insert it as an image. In this case you'll still need to use the table environment, not the figure environment.
+
+\end{enumerate}
+
+\end{document}
+\clearpage
