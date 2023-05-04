@@ -28,26 +28,36 @@ files = [file_133, file_293, file_407, file_555, file_1021,
          file_2274, file_5507, file_10180, file_16200]
 file_133[3] = file_133[3].astype(str)
 
-mean = []
-std = []
+mean = [[], [], []]
+std = [[], [], []]
 
 for f in files:
     f.columns = ['tmp', 'Event', 'Trg_time', 'P1', 'P2', 'P3']
     f.drop('tmp', axis=1, inplace=True)
+    # convert from hexadecimal to decimal
     f['P1'] = f['P1'].apply(int, base=16)
     f['P2'] = f['P2'].apply(int, base=16)
     f['P3'] = f['P3'].apply(int, base=16)
-    tmp_mean = (f['P1'].mean() + f['P2'].mean() + f['P3'].mean())/3
-    tmp_std = np.sqrt((f['P1'].std()*f['P1'].std() + f['P2'].std()
-                      * f['P2'].std() + f['P3'].std()*f['P3'].std()))
-    mean.append(tmp_mean)
-    std.append(tmp_std)
+    # mean and std arrays
+    mean[0].append(f['P1'].mean())
+    std[0].append(f['P1'].std())
+    mean[1].append(f['P2'].mean())
+    std[1].append(f['P2'].std())
+    mean[2].append(f['P3'].mean())
+    std[2].append(f['P3'].std())
+
+# convert in array to keep ROOT happy
+
+mean_1 = array('f', mean[0])
+std_1 = array('f', std[0])
+mean_2 = array('f', mean[1])
+std_2 = array('f', std[1])
+mean_3 = array('f', mean[2])
+std_3 = array('f', std[2])
 
 y = [133.8, 293.2, 407.4, 555.0, 1021.0, 2274.0, 5507.0, 10180.0, 16200.0]
 yerr = [0.450, 0.58, 0.969, 1.0, 3.0, 16.0, 18.0, 22.0, 25.0]
 
-mean = array('f', mean)
-std = array('f', std)
 y = array('f', y)
 yerr = array('f', yerr)
 
@@ -55,11 +65,36 @@ gStyle.SetOptTitle(1)
 gStyle.SetOptStat(1110)
 gStyle.SetOptFit(111)
 
-graph = ROOT.TGraphErrors(9, mean, y, std, yerr)
-fit_func = ROOT.TF1("Linear regression", "[0]*x + [1]")
-graph.Fit(fit_func)
+graphs = [ROOT.TGraphErrors(9, mean_1, y, std_1, yerr),
+          ROOT.TGraphErrors(9, mean_2, y, std_2, yerr),
+          ROOT.TGraphErrors(9, mean_2, y, std_2, yerr)]
 
-graph.Draw()
+fit_func = ROOT.TF1("Linear regression", "[0]*x + [1]")
+
+canvases = []
+stats = []
+i = 0
+
+for g in graphs:
+    canvases.append(ROOT.TCanvas())
+    canvases[i].SetCanvasSize(900, 500)
+    canvases[i].SetWindowSize(1000, 600)
+    g.GetXaxis().SetTitle("Number of clock ticks")
+    g.GetYaxis().SetTitle("Time [#mus]")
+    g.SetTitle("Calibration for plane " + str(i+1))
+    g.Fit(fit_func)
+    g.Draw()
+    gPad.Update()
+    stats.append(g.FindObject("stats"))
+    stats[i].SetX1NDC(0.100287)
+    stats[i].SetY1NDC(0.738947)
+    stats[i].SetX2NDC(0.459885)
+    stats[i].SetY2NDC(0.898947)
+    gPad.Update()
+    canvases[i].Print("calib_plane_" + str(i+1) + ".pdf")
+    i += 1
+
+
 
 # wait for input to keep the GUI (which lives on a ROOT event dispatcher) alive
 if __name__ == '__main__':
