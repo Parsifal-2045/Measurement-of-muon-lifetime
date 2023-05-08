@@ -12,9 +12,9 @@ if benchmark == 'y':
     gBenchmark.Start("data_prep")
 
 # read from files and convert from hex to decimal
-iron = pd.read_csv("data/ferro_26042023.txt",
+iron = pd.read_csv("data/new_iron.txt",
                    header=None, delim_whitespace=True)
-cement = pd.read_csv("data/cemento_21042023.txt",
+cement = pd.read_csv("data/new_cement.txt",
                      header=None, delim_whitespace=True)
 
 files = [iron, cement]
@@ -26,18 +26,16 @@ for f in files:
     f['P2'] = f['P2'].apply(int, base=16)
     f['P3'] = f['P3'].apply(int, base=16)
     for i in range(len(f['P1'])):
-        if f['P1'][i] != 4095 and f['P2'][i] != 4095 & f['P3'][i] != 4095:
+        if f['P1'][i] != 4095 and f['P2'][i] != 4095 and f['P3'][i] != 4095:
             f.drop(i)
-
-# ROOT style
-gStyle.SetOptTitle(1)
-gStyle.SetOptStat(1110)
-gStyle.SetOptFit(111)
+    f['P1'] = f['P1'].apply(lambda x: x*3.98e-03)
+    f['P2'] = f['P2'].apply(lambda x: x*3.98e-03)
+    f['P3'] = f['P3'].apply(lambda x: x*3.98e-03)
 
 # create and fill iron histograms
-p1_iron = ROOT.TH1D("P1_iron", "P1 iron", 100, 0, 4095)
-p2_iron = ROOT.TH1D("P2_iron", "P2 iron", 100, 0, 4095)
-p3_iron = ROOT.TH1D("P3_iron", "P3 iron", 100, 0, 4095)
+p1_iron = ROOT.TH1D("P1_iron", "P1 iron", 256, 0, 16)
+p2_iron = ROOT.TH1D("P2_iron", "P2 iron", 256, 0, 16)
+p3_iron = ROOT.TH1D("P3_iron", "P3 iron", 256, 0, 16)
 
 
 for i in range(len(iron['P1'])):
@@ -46,9 +44,9 @@ for i in range(len(iron['P1'])):
     p3_iron.Fill(iron['P3'][i])
 
 # create and fill cement histograms
-p1_cement = ROOT.TH1D("P1_cement", "P1 cement", 100, 0, 4095)
-p2_cement = ROOT.TH1D("P2_cement", "P2 cement", 100, 0, 4095)
-p3_cement = ROOT.TH1D("P3_cement", "P3 cement", 100, 0, 4095)
+p1_cement = ROOT.TH1D("P1_cement", "P1 cement", 256, 0, 16)
+p2_cement = ROOT.TH1D("P2_cement", "P2 cement", 256, 0, 16)
+p3_cement = ROOT.TH1D("P3_cement", "P3 cement", 256, 0, 16)
 
 for i in range(len(cement['P1'])):
     p1_cement.Fill(cement['P1'][i])
@@ -83,7 +81,7 @@ p3_cement.Draw("E,H")
 canv_iron.Print("Histograms with iron.pdf")
 canv_cement.Print("Histograms with cement.pdf")
 
-file = ROOT.TFile("histograms.root", "RECREATE")
+file = ROOT.TFile("all_data.root", "RECREATE")
 p1_cement.Write()
 p2_cement.Write()
 p3_cement.Write()
