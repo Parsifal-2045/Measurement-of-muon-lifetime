@@ -75,6 +75,9 @@ canvases = []
 stats = []
 i = 0
 
+conversion_factor = []
+err_conversion_factor = []
+
 for g in graphs:
     canvases.append(ROOT.TCanvas())
     canvases[i].SetCanvasSize(900, 500)
@@ -83,6 +86,8 @@ for g in graphs:
     g.GetYaxis().SetTitle("Time [#mus]")
     g.SetTitle("Calibration for plane " + str(i+1))
     g.Fit(fit_func)
+    conversion_factor.append(fit_func.GetParameter(0))
+    err_conversion_factor.append(fit_func.GetParError(0))
     g.Draw()
     gPad.Update()
     stats.append(g.FindObject("stats"))
@@ -94,7 +99,8 @@ for g in graphs:
     canvases[i].Print("calib_plane_" + str(i+1) + ".pdf")
     i += 1
 
-
+print(conversion_factor)
+print(err_conversion_factor)
 
 # wait for input to keep the GUI (which lives on a ROOT event dispatcher) alive
 if __name__ == '__main__':
