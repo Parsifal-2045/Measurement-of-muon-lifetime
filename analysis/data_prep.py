@@ -6,10 +6,17 @@ from array import array
 import pandas as pd
 import numpy as np
 
+create_files = True
+
 benchmark = input(
     "Do you want to benchmark the data preparation code? (y/n)\n")
 if benchmark == 'y':
     gBenchmark.Start("data_prep")
+
+# ROOT style
+gStyle.SetOptTitle(1)
+gStyle.SetOptStat(1110)
+gStyle.SetOptFit(111)
 
 # read from files and convert from hex to decimal
 iron = pd.read_csv("data/new_iron.txt",
@@ -32,65 +39,94 @@ for f in files:
     f['P2'] = f['P2'].apply(lambda x: x*3.98e-03)
     f['P3'] = f['P3'].apply(lambda x: x*3.98e-03)
 
-# create and fill iron histograms
+# create histograms
 p1_iron = ROOT.TH1D("P1_iron", "P1 iron", 256, 0, 16)
 p2_iron = ROOT.TH1D("P2_iron", "P2 iron", 256, 0, 16)
 p3_iron = ROOT.TH1D("P3_iron", "P3 iron", 256, 0, 16)
 
-
-for i in range(len(iron['P1'])):
-    p1_iron.Fill(iron['P1'][i])
-    p2_iron.Fill(iron['P2'][i])
-    p3_iron.Fill(iron['P3'][i])
-
-# create and fill cement histograms
 p1_cement = ROOT.TH1D("P1_cement", "P1 cement", 256, 0, 16)
 p2_cement = ROOT.TH1D("P2_cement", "P2 cement", 256, 0, 16)
 p3_cement = ROOT.TH1D("P3_cement", "P3 cement", 256, 0, 16)
 
+histograms = [p1_iron, p2_iron, p3_iron, p1_cement, p2_cement, p3_cement]
+
+# fill histograms with raw data (no filter)
+for i in range(len(iron['P1'])):
+    p1_iron.Fill(iron['P1'][i])
+    p2_iron.Fill(iron['P2'][i])
+    p3_iron.Fill(iron['P3'][i])
 for i in range(len(cement['P1'])):
     p1_cement.Fill(cement['P1'][i])
     p2_cement.Fill(cement['P2'][i])
     p3_cement.Fill(cement['P3'][i])
-
-# display iron histograms
-canv_iron = ROOT.TCanvas("display_canvas_1", "Histograms with iron")
-canv_iron.SetCanvasSize(1331, 475)
-canv_iron.SetWindowSize(1333, 500)
-canv_iron.Divide(3, 1)
-canv_iron.cd(1)
-p1_iron.Draw("E,H")
-canv_iron.cd(2)
-p2_iron.Draw("E,H")
-canv_iron.cd(3)
-p3_iron.Draw("E,H")
+# display raw histograms
+canvas = ROOT.TCanvas("canvas", "Histograms not filtered")
+canvas.Divide(3, 2)
+for i in range(len(histograms)):
+    canvas.cd(i+1)
+    histograms[i].Draw("E,H")
 
 
-# display cement histograms
-canv_cement = ROOT.TCanvas("display_canvas_2", "Histograms with cement")
-canv_cement.SetCanvasSize(1331, 475)
-canv_cement.SetWindowSize(1333, 500)
-canv_cement.Divide(3, 1)
-canv_cement.cd(1)
-p1_cement.Draw("E,H")
-canv_cement.cd(2)
-p2_cement.Draw("E,H")
-canv_cement.cd(3)
-p3_cement.Draw("E,H")
+# create filtered histograms
+p1_filtered_iron = ROOT.TH1D(
+    "P1_filtered_iron", "P1 filtered iron", 256, 0, 16)
+p2_filtered_iron = ROOT.TH1D(
+    "P2_filtered_iron", "P2 filtered iron", 256, 0, 16)
+p3_filtered_iron = ROOT.TH1D(
+    "P3_filtered_iron", "P3 filtered iron", 256, 0, 16)
 
-canv_iron.Print("Histograms with iron.pdf")
-canv_cement.Print("Histograms with cement.pdf")
+p1_filtered_cement = ROOT.TH1D(
+    "P1_filtered_cement", "P1 filtered cement", 256, 0, 16)
+p2_filtered_cement = ROOT.TH1D(
+    "P2_filtered_cement", "P2 filtered cement", 256, 0, 16)
+p3_filtered_cement = ROOT.TH1D(
+    "P3_filtered_cement", "P3 filtered cement", 256, 0, 16)
 
-file = ROOT.TFile("all_data.root", "RECREATE")
-p1_cement.Write()
-p2_cement.Write()
-p3_cement.Write()
-p1_iron.Write()
-p2_iron.Write()
-p3_iron.Write()
-canv_iron.Write()
-canv_cement.Write()
-file.Close()
+
+filtered_histograms = [p1_filtered_iron, p2_filtered_iron, p3_filtered_iron,
+                       p1_filtered_cement, p2_filtered_cement, p3_filtered_cement]
+
+overflow = 4095 * 3.98e-03
+
+# fill filtered histograms: P1&P2 coincidences, only P3
+for i in range(len(iron['P1'])):
+    if iron['P1'][i] != overflow and iron['P2'][i] != overflow and iron['P3'][i] == overflow:
+        p1_filtered_iron.Fill(iron['P1'][i])
+        p2_filtered_iron.Fill(iron['P2'][i])
+        # mean = (iron['P1'][i] + iron['P2'][i]) / 2 TODO maybe?
+
+    if iron['P1'][i] == overflow and iron['P2'][i] == overflow and iron['P3'][i] != overflow:
+        p3_filtered_iron.Fill(iron['P3'][i])
+
+for i in range(len(cement['P1'])):
+    if cement['P1'][i] != overflow and cement['P2'][i] != overflow and cement['P3'][i] == overflow:
+        p1_filtered_cement.Fill(cement['P1'][i])
+        p2_filtered_cement.Fill(cement['P2'][i])
+        # mean = (cement['P1'][i] + cement['P2'][i]) / 2 TODO maybe?
+
+    if cement['P1'][i] == overflow and cement['P2'][i] == overflow and cement['P3'][i] != overflow:
+        p3_filtered_cement.Fill(cement['P3'][i])
+
+# display filtered histograms
+filtered_canvas = ROOT.TCanvas("filtered_canvas", "Filtered histograms")
+filtered_canvas.Divide(3, 2)
+for i in range(len(filtered_histograms)):
+    filtered_canvas.cd(i+1)
+    filtered_histograms[i].Draw("E,H")
+
+# create root files
+if create_files:
+    all_data = ROOT.TFile("all_data.root", "RECREATE")
+    for i in range(len(histograms)):
+        histograms[i].Write()
+    canvas.Write()
+    all_data.Close()
+
+    filtered_data = ROOT.TFile("filtered_data.root", "RECREATE")
+    for i in range(len(filtered_histograms)):
+        filtered_histograms[i].Write()
+    filtered_canvas.Write()
+    filtered_data.Close()
 
 if benchmark == 'y':
     gBenchmark.Show("data_prep")
