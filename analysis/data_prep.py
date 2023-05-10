@@ -17,6 +17,7 @@ if benchmark == 'y':
 gStyle.SetOptTitle(1)
 gStyle.SetOptStat(1110)
 gStyle.SetOptFit(111)
+gStyle.SetLineScalePS(1)
 
 # read from files and convert from hex to decimal
 iron = pd.read_csv("data/new_iron.txt",
@@ -39,61 +40,74 @@ for f in files:
     f['P2'] = f['P2'].apply(lambda x: x*3.98e-03)
     f['P3'] = f['P3'].apply(lambda x: x*3.98e-03)
 
-# create histograms
-p1_iron = ROOT.TH1D("P1_iron", "P1 iron", 256, 0, 16)
-p2_iron = ROOT.TH1D("P2_iron", "P2 iron", 256, 0, 16)
-p3_iron = ROOT.TH1D("P3_iron", "P3 iron", 256, 0, 16)
+overflow = 4095 * 3.98e-03
 
-p1_cement = ROOT.TH1D("P1_cement", "P1 cement", 256, 0, 16)
-p2_cement = ROOT.TH1D("P2_cement", "P2 cement", 256, 0, 16)
-p3_cement = ROOT.TH1D("P3_cement", "P3 cement", 256, 0, 16)
+# create histograms
+p1_iron = ROOT.TH1D("P1_iron", "P1 iron", 128, 0, 16)
+p2_iron = ROOT.TH1D("P2_iron", "P2 iron", 128, 0, 16)
+p3_iron = ROOT.TH1D("P3_iron", "P3 iron", 128, 0, 16)
+
+p1_cement = ROOT.TH1D("P1_cement", "P1 cement", 128, 0, 16)
+p2_cement = ROOT.TH1D("P2_cement", "P2 cement", 128, 0, 16)
+p3_cement = ROOT.TH1D("P3_cement", "P3 cement", 128, 0, 16)
 
 histograms = [p1_iron, p2_iron, p3_iron, p1_cement, p2_cement, p3_cement]
 
 # fill histograms with raw data (no filter)
 for i in range(len(iron['P1'])):
-    p1_iron.Fill(iron['P1'][i])
-    p2_iron.Fill(iron['P2'][i])
-    p3_iron.Fill(iron['P3'][i])
+    if iron['P1'][i] != overflow:
+        p1_iron.Fill(iron['P1'][i])
+    if iron['P2'][i] != overflow:
+        p2_iron.Fill(iron['P2'][i])
+    if iron['P3'][i] != overflow:
+        p3_iron.Fill(iron['P3'][i])
+
 for i in range(len(cement['P1'])):
-    p1_cement.Fill(cement['P1'][i])
-    p2_cement.Fill(cement['P2'][i])
-    p3_cement.Fill(cement['P3'][i])
+    if cement['P1'][i] != overflow:
+        p1_cement.Fill(cement['P1'][i])
+    if cement['P2'][i] != overflow:
+        p2_cement.Fill(cement['P2'][i])
+    if cement['P3'][i] != overflow:
+        p3_cement.Fill(cement['P3'][i])
+
+for h in histograms:
+    h.GetXaxis().SetTitle("Stop time #mus")
+    h.GetYaxis().SetTitle("Counts")
+
 # display raw histograms
-canvas = ROOT.TCanvas("canvas", "Histograms not filtered")
+canvas = ROOT.TCanvas("canvas", "Histograms not filtered", 1400, 700)
 canvas.Divide(3, 2)
 for i in range(len(histograms)):
     canvas.cd(i+1)
     histograms[i].Draw("E,H")
 
+canvas.Print("histograms.pdf")
+
 
 # create filtered histograms
 p1_filtered_iron = ROOT.TH1D(
-    "P1_filtered_iron", "P1 filtered iron", 256, 0, 16)
+    "P1_filtered_iron", "P1 filtered iron", 128, 0, 16)
 p2_filtered_iron = ROOT.TH1D(
-    "P2_filtered_iron", "P2 filtered iron", 256, 0, 16)
+    "P2_filtered_iron", "P2 filtered iron", 128, 0, 16)
 p3_filtered_iron = ROOT.TH1D(
-    "P3_filtered_iron", "P3 filtered iron", 256, 0, 16)
+    "P3_filtered_iron", "P3 filtered iron", 128, 0, 16)
 
 p1_filtered_cement = ROOT.TH1D(
-    "P1_filtered_cement", "P1 filtered cement", 256, 0, 16)
+    "P1_filtered_cement", "P1 filtered cement", 128, 0, 16)
 p2_filtered_cement = ROOT.TH1D(
-    "P2_filtered_cement", "P2 filtered cement", 256, 0, 16)
+    "P2_filtered_cement", "P2 filtered cement", 128, 0, 16)
 p3_filtered_cement = ROOT.TH1D(
-    "P3_filtered_cement", "P3 filtered cement", 256, 0, 16)
+    "P3_filtered_cement", "P3 filtered cement", 128, 0, 16)
 
 
 filtered_histograms = [p1_filtered_iron, p2_filtered_iron, p3_filtered_iron,
                        p1_filtered_cement, p2_filtered_cement, p3_filtered_cement]
-
-overflow = 4095 * 3.98e-03
 
 # fill filtered histograms: P1&P2 coincidences, only P3
 for i in range(len(iron['P1'])):
     if iron['P1'][i] != overflow and iron['P2'][i] != overflow and iron['P3'][i] == overflow:
         p1_filtered_iron.Fill(iron['P1'][i])
         p2_filtered_iron.Fill(iron['P2'][i])
-        # mean = (iron['P1'][i] + iron['P2'][i]) / 2 TODO maybe?
 
     if iron['P1'][i] == overflow and iron['P2'][i] == overflow and iron['P3'][i] != overflow:
         p3_filtered_iron.Fill(iron['P3'][i])
@@ -102,17 +116,22 @@ for i in range(len(cement['P1'])):
     if cement['P1'][i] != overflow and cement['P2'][i] != overflow and cement['P3'][i] == overflow:
         p1_filtered_cement.Fill(cement['P1'][i])
         p2_filtered_cement.Fill(cement['P2'][i])
-        # mean = (cement['P1'][i] + cement['P2'][i]) / 2 TODO maybe?
 
     if cement['P1'][i] == overflow and cement['P2'][i] == overflow and cement['P3'][i] != overflow:
         p3_filtered_cement.Fill(cement['P3'][i])
 
+for h in filtered_histograms:
+    h.GetXaxis().SetTitle("Stop time #mus")
+    h.GetYaxis().SetTitle("Counts")
+
 # display filtered histograms
-filtered_canvas = ROOT.TCanvas("filtered_canvas", "Filtered histograms")
+filtered_canvas = ROOT.TCanvas("filtered_canvas", "Filtered histograms", 1400, 700)
 filtered_canvas.Divide(3, 2)
 for i in range(len(filtered_histograms)):
     filtered_canvas.cd(i+1)
     filtered_histograms[i].Draw("E,H")
+
+filtered_canvas.Print("filtered_histograms.pdf")
 
 # create root files
 if create_files:
