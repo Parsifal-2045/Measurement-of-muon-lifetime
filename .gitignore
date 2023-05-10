@@ -2,3 +2,4 @@ analysis/*.pdf
 analysis/data/*.txt
 analysis/calibration_data/*.txt
 analysis/.vscode
+analysis/*.root
