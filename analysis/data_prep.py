@@ -6,7 +6,9 @@ from array import array
 import pandas as pd
 import numpy as np
 
+# execution parameters
 create_files = True
+check_afterpulses = False
 
 benchmark = input(
     "Do you want to benchmark the data preparation code? (y/n)\n")
@@ -36,6 +38,81 @@ for f in files:
     for i in range(len(f['P1'])):
         if f['P1'][i] != 4095 and f['P2'][i] != 4095 and f['P3'][i] != 4095:
             f.drop(i)
+
+if check_afterpulses == True:
+    ibin_p1_iron = ROOT.TH1D(
+        "ibin_iron1", "First 50 bins of P1 iron", 50, 0, 50)
+    ibin_p2_iron = ROOT.TH1D(
+        "ibin_iron2", "First 50 bins of P2 iron", 50, 0, 50)
+    ibin_p3_iron = ROOT.TH1D(
+        "ibin_iron3", "First 50 bins of P3 iron", 50, 0, 50)
+    ibin_p1_and_p2_iron = ROOT.TH1D(
+        "ibin_iron1_and_2", "First 50 bins of P1&P2 iron", 50, 0, 50)
+
+    ibin_p1_cement = ROOT.TH1D(
+        "ibin_cement1", "First 50 bins of P1 cement", 50, 0, 50)
+    ibin_p2_cement = ROOT.TH1D(
+        "ibin_cement2", "First 50 bins of P2 cement", 50, 0, 50)
+    ibin_p3_cement = ROOT.TH1D(
+        "ibin_cement3", "First 50 bins of P3 cement", 50, 0, 50)
+    ibin_p1_and_p2_cement = ROOT.TH1D(
+        "ibin_cement1_and_2", "First 50 bins of P1&P2 cement", 50, 0, 50)
+
+    ibinshistos = [ibin_p1_iron, ibin_p2_iron, ibin_p3_iron, ibin_p1_and_p2_iron,
+                   ibin_p1_cement, ibin_p2_cement, ibin_p3_cement, ibin_p1_and_p2_cement]
+
+    for i in range(len(iron['P1'])):
+        if iron['P1'][i] != 4095:
+            ibin_p1_iron.Fill(iron['P1'][i])
+        if iron['P2'][i] != 4095:
+            ibin_p2_iron.Fill(iron['P2'][i])
+        if iron['P3'][i] != 4095:
+            ibin_p3_iron.Fill(iron['P3'][i])
+        if iron['P1'][i] != 4095 and iron['P2'][i] != 4095 and iron['P3'][i] == 4095:
+            ibin_p1_and_p2_iron.Fill(iron['P2'][i])
+
+    for i in range(len(cement['P1'])):
+        if cement['P1'][i] != 4095:
+            ibin_p1_cement.Fill(cement['P1'][i])
+        if cement['P2'][i] != 4095:
+            ibin_p2_cement.Fill(cement['P2'][i])
+        if cement['P3'][i] != 4095:
+            ibin_p3_cement.Fill(cement['P3'][i])
+        if cement['P1'][i] != 4095 and cement['P2'][i] != 4095 and cement['P3'][i] == 4095:
+            ibin_p1_and_p2_cement.Fill(cement['P2'][i])
+
+    for h in ibinshistos:
+        h.GetXaxis().SetTitle("Clock ticks")
+        h.GetYaxis().SetTitle("Counts")
+
+    first_50_bin_canvas = ROOT.TCanvas(
+        "first_50_iron", "First 50 bins of iron planes", 1400, 700)
+    first_50_bin_canvas.Divide(4, 1)
+    first_50_bin_canvas.cd(1)
+    ibin_p1_iron.Draw()
+    first_50_bin_canvas.cd(2)
+    ibin_p2_iron.Draw()
+    first_50_bin_canvas.cd(3)
+    ibin_p3_iron.Draw()
+    first_50_bin_canvas.cd(4)
+    ibin_p1_and_p2_iron.Draw()
+
+    first_50_bin_canvas_cement = ROOT.TCanvas(
+        "first_50_cement", "First 50 bins of cement planes", 1400, 700)
+    first_50_bin_canvas_cement.Divide(4, 1)
+    first_50_bin_canvas_cement.cd(1)
+    ibin_p1_cement.Draw()
+    first_50_bin_canvas_cement.cd(2)
+    ibin_p2_cement.Draw()
+    first_50_bin_canvas_cement.cd(3)
+    ibin_p3_cement.Draw()
+    first_50_bin_canvas_cement.cd(4)
+    ibin_p1_and_p2_cement.Draw()
+
+    first_50_bin_canvas.Print("first_50_iron_bins.pdf")
+    first_50_bin_canvas_cement.Print("first_50_cement_bins.pdf")
+
+for f in files:
     f['P1'] = f['P1'].apply(lambda x: x*3.98e-03)
     f['P2'] = f['P2'].apply(lambda x: x*3.98e-03)
     f['P3'] = f['P3'].apply(lambda x: x*3.98e-03)
@@ -125,7 +202,8 @@ for h in filtered_histograms:
     h.GetYaxis().SetTitle("Counts")
 
 # display filtered histograms
-filtered_canvas = ROOT.TCanvas("filtered_canvas", "Filtered histograms", 1400, 700)
+filtered_canvas = ROOT.TCanvas(
+    "filtered_canvas", "Filtered histograms", 1400, 700)
 filtered_canvas.Divide(3, 2)
 for i in range(len(filtered_histograms)):
     filtered_canvas.cd(i+1)
