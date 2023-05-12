@@ -24,10 +24,10 @@ gStyle.SetLineScalePS(1)
 # read from files and convert from hex to decimal
 iron = pd.read_csv("data/new_iron.txt",
                    header=None, delim_whitespace=True)
-cement = pd.read_csv("data/new_cement.txt",
-                     header=None, delim_whitespace=True)
+concrete = pd.read_csv("data/new_concrete.txt",
+                       header=None, delim_whitespace=True)
 
-files = [iron, cement]
+files = [iron, concrete]
 
 for f in files:
     f.columns = ['tmp', 'Event', 'Trg_time', 'P1', 'P2', 'P3']
@@ -41,25 +41,25 @@ for f in files:
 
 if check_afterpulses == True:
     ibin_p1_iron = ROOT.TH1D(
-        "ibin_iron1", "First 50 bins of P1 iron", 50, 0, 50)
+        "ibin_iron1", "First 150 bins of P1 iron", 150, 0, 150)
     ibin_p2_iron = ROOT.TH1D(
-        "ibin_iron2", "First 50 bins of P2 iron", 50, 0, 50)
+        "ibin_iron2", "First 150 bins of P2 iron", 150, 0, 150)
     ibin_p3_iron = ROOT.TH1D(
-        "ibin_iron3", "First 50 bins of P3 iron", 50, 0, 50)
+        "ibin_iron3", "First 150 bins of P3 iron", 150, 0, 150)
     ibin_p1_and_p2_iron = ROOT.TH1D(
-        "ibin_iron1_and_2", "First 50 bins of P1&P2 iron", 50, 0, 50)
+        "ibin_iron1_and_2", "First 150 bins of P1&P2 iron", 150, 0, 150)
 
-    ibin_p1_cement = ROOT.TH1D(
-        "ibin_cement1", "First 50 bins of P1 cement", 50, 0, 50)
-    ibin_p2_cement = ROOT.TH1D(
-        "ibin_cement2", "First 50 bins of P2 cement", 50, 0, 50)
-    ibin_p3_cement = ROOT.TH1D(
-        "ibin_cement3", "First 50 bins of P3 cement", 50, 0, 50)
-    ibin_p1_and_p2_cement = ROOT.TH1D(
-        "ibin_cement1_and_2", "First 50 bins of P1&P2 cement", 50, 0, 50)
+    ibin_p1_concrete = ROOT.TH1D(
+        "ibin_concrete1", "First 150 bins of P1 concrete", 150, 0, 150)
+    ibin_p2_concrete = ROOT.TH1D(
+        "ibin_concrete2", "First 150 bins of P2 concrete", 150, 0, 150)
+    ibin_p3_concrete = ROOT.TH1D(
+        "ibin_concrete3", "First 150 bins of P3 concrete", 150, 0, 150)
+    ibin_p1_and_p2_concrete = ROOT.TH1D(
+        "ibin_concrete1_and_2", "First 150 bins of P1&P2 concrete", 150, 0, 150)
 
     ibinshistos = [ibin_p1_iron, ibin_p2_iron, ibin_p3_iron, ibin_p1_and_p2_iron,
-                   ibin_p1_cement, ibin_p2_cement, ibin_p3_cement, ibin_p1_and_p2_cement]
+                   ibin_p1_concrete, ibin_p2_concrete, ibin_p3_concrete, ibin_p1_and_p2_concrete]
 
     for i in range(len(iron['P1'])):
         if iron['P1'][i] != 4095:
@@ -71,46 +71,46 @@ if check_afterpulses == True:
         if iron['P1'][i] != 4095 and iron['P2'][i] != 4095 and iron['P3'][i] == 4095:
             ibin_p1_and_p2_iron.Fill(iron['P2'][i])
 
-    for i in range(len(cement['P1'])):
-        if cement['P1'][i] != 4095:
-            ibin_p1_cement.Fill(cement['P1'][i])
-        if cement['P2'][i] != 4095:
-            ibin_p2_cement.Fill(cement['P2'][i])
-        if cement['P3'][i] != 4095:
-            ibin_p3_cement.Fill(cement['P3'][i])
-        if cement['P1'][i] != 4095 and cement['P2'][i] != 4095 and cement['P3'][i] == 4095:
-            ibin_p1_and_p2_cement.Fill(cement['P2'][i])
+    for i in range(len(concrete['P1'])):
+        if concrete['P1'][i] != 4095:
+            ibin_p1_concrete.Fill(concrete['P1'][i])
+        if concrete['P2'][i] != 4095:
+            ibin_p2_concrete.Fill(concrete['P2'][i])
+        if concrete['P3'][i] != 4095:
+            ibin_p3_concrete.Fill(concrete['P3'][i])
+        if concrete['P1'][i] != 4095 and concrete['P2'][i] != 4095 and concrete['P3'][i] == 4095:
+            ibin_p1_and_p2_concrete.Fill(concrete['P2'][i])
 
     for h in ibinshistos:
         h.GetXaxis().SetTitle("Clock ticks")
         h.GetYaxis().SetTitle("Counts")
 
-    first_50_bin_canvas = ROOT.TCanvas(
-        "first_50_iron", "First 50 bins of iron planes", 1400, 700)
-    first_50_bin_canvas.Divide(4, 1)
-    first_50_bin_canvas.cd(1)
+    first_150_bin_canvas = ROOT.TCanvas(
+        "first_150_iron", "First 150 bins of iron planes", 1400, 700)
+    first_150_bin_canvas.Divide(4, 1)
+    first_150_bin_canvas.cd(1)
     ibin_p1_iron.Draw()
-    first_50_bin_canvas.cd(2)
+    first_150_bin_canvas.cd(2)
     ibin_p2_iron.Draw()
-    first_50_bin_canvas.cd(3)
+    first_150_bin_canvas.cd(3)
     ibin_p3_iron.Draw()
-    first_50_bin_canvas.cd(4)
+    first_150_bin_canvas.cd(4)
     ibin_p1_and_p2_iron.Draw()
 
-    first_50_bin_canvas_cement = ROOT.TCanvas(
-        "first_50_cement", "First 50 bins of cement planes", 1400, 700)
-    first_50_bin_canvas_cement.Divide(4, 1)
-    first_50_bin_canvas_cement.cd(1)
-    ibin_p1_cement.Draw()
-    first_50_bin_canvas_cement.cd(2)
-    ibin_p2_cement.Draw()
-    first_50_bin_canvas_cement.cd(3)
-    ibin_p3_cement.Draw()
-    first_50_bin_canvas_cement.cd(4)
-    ibin_p1_and_p2_cement.Draw()
+    first_150_bin_canvas_concrete = ROOT.TCanvas(
+        "first_150_concrete", "First 150 bins of concrete planes", 1400, 700)
+    first_150_bin_canvas_concrete.Divide(4, 1)
+    first_150_bin_canvas_concrete.cd(1)
+    ibin_p1_concrete.Draw()
+    first_150_bin_canvas_concrete.cd(2)
+    ibin_p2_concrete.Draw()
+    first_150_bin_canvas_concrete.cd(3)
+    ibin_p3_concrete.Draw()
+    first_150_bin_canvas_concrete.cd(4)
+    ibin_p1_and_p2_concrete.Draw()
 
-    first_50_bin_canvas.Print("first_50_iron_bins.pdf")
-    first_50_bin_canvas_cement.Print("first_50_cement_bins.pdf")
+    first_150_bin_canvas.Print("first_150_iron_bins.pdf")
+    first_150_bin_canvas_concrete.Print("first_150_concrete_bins.pdf")
 
 for f in files:
     f['P1'] = f['P1'].apply(lambda x: x*3.98e-03)
@@ -124,11 +124,11 @@ p1_iron = ROOT.TH1D("P1_iron", "P1 iron", 128, 0, 16)
 p2_iron = ROOT.TH1D("P2_iron", "P2 iron", 128, 0, 16)
 p3_iron = ROOT.TH1D("P3_iron", "P3 iron", 128, 0, 16)
 
-p1_cement = ROOT.TH1D("P1_cement", "P1 cement", 128, 0, 16)
-p2_cement = ROOT.TH1D("P2_cement", "P2 cement", 128, 0, 16)
-p3_cement = ROOT.TH1D("P3_cement", "P3 cement", 128, 0, 16)
+p1_concrete = ROOT.TH1D("P1_concrete", "P1 concrete", 128, 0, 16)
+p2_concrete = ROOT.TH1D("P2_concrete", "P2 concrete", 128, 0, 16)
+p3_concrete = ROOT.TH1D("P3_concrete", "P3 concrete", 128, 0, 16)
 
-histograms = [p1_iron, p2_iron, p3_iron, p1_cement, p2_cement, p3_cement]
+histograms = [p1_iron, p2_iron, p3_iron, p1_concrete, p2_concrete, p3_concrete]
 
 # fill histograms with raw data (no filter)
 for i in range(len(iron['P1'])):
@@ -139,13 +139,13 @@ for i in range(len(iron['P1'])):
     if iron['P3'][i] != overflow:
         p3_iron.Fill(iron['P3'][i])
 
-for i in range(len(cement['P1'])):
-    if cement['P1'][i] != overflow:
-        p1_cement.Fill(cement['P1'][i])
-    if cement['P2'][i] != overflow:
-        p2_cement.Fill(cement['P2'][i])
-    if cement['P3'][i] != overflow:
-        p3_cement.Fill(cement['P3'][i])
+for i in range(len(concrete['P1'])):
+    if concrete['P1'][i] != overflow:
+        p1_concrete.Fill(concrete['P1'][i])
+    if concrete['P2'][i] != overflow:
+        p2_concrete.Fill(concrete['P2'][i])
+    if concrete['P3'][i] != overflow:
+        p3_concrete.Fill(concrete['P3'][i])
 
 for h in histograms:
     h.GetXaxis().SetTitle("Stop time #mus")
@@ -169,16 +169,16 @@ p2_filtered_iron = ROOT.TH1D(
 p3_filtered_iron = ROOT.TH1D(
     "P3_filtered_iron", "P3 filtered iron", 128, 0, 16)
 
-p1_filtered_cement = ROOT.TH1D(
-    "P1_filtered_cement", "P1 filtered cement", 128, 0, 16)
-p2_filtered_cement = ROOT.TH1D(
-    "P2_filtered_cement", "P2 filtered cement", 128, 0, 16)
-p3_filtered_cement = ROOT.TH1D(
-    "P3_filtered_cement", "P3 filtered cement", 128, 0, 16)
+p1_filtered_concrete = ROOT.TH1D(
+    "P1_filtered_concrete", "P1 filtered concrete", 128, 0, 16)
+p2_filtered_concrete = ROOT.TH1D(
+    "P2_filtered_concrete", "P2 filtered concrete", 128, 0, 16)
+p3_filtered_concrete = ROOT.TH1D(
+    "P3_filtered_concrete", "P3 filtered concrete", 128, 0, 16)
 
 
 filtered_histograms = [p1_filtered_iron, p2_filtered_iron, p3_filtered_iron,
-                       p1_filtered_cement, p2_filtered_cement, p3_filtered_cement]
+                       p1_filtered_concrete, p2_filtered_concrete, p3_filtered_concrete]
 
 # fill filtered histograms: P1&P2 coincidences, only P3
 for i in range(len(iron['P1'])):
@@ -189,13 +189,13 @@ for i in range(len(iron['P1'])):
     if iron['P1'][i] == overflow and iron['P2'][i] == overflow and iron['P3'][i] != overflow:
         p3_filtered_iron.Fill(iron['P3'][i])
 
-for i in range(len(cement['P1'])):
-    if cement['P1'][i] != overflow and cement['P2'][i] != overflow and cement['P3'][i] == overflow:
-        p1_filtered_cement.Fill(cement['P1'][i])
-        p2_filtered_cement.Fill(cement['P2'][i])
+for i in range(len(concrete['P1'])):
+    if concrete['P1'][i] != overflow and concrete['P2'][i] != overflow and concrete['P3'][i] == overflow:
+        p1_filtered_concrete.Fill(concrete['P1'][i])
+        p2_filtered_concrete.Fill(concrete['P2'][i])
 
-    if cement['P1'][i] == overflow and cement['P2'][i] == overflow and cement['P3'][i] != overflow:
-        p3_filtered_cement.Fill(cement['P3'][i])
+    if concrete['P1'][i] == overflow and concrete['P2'][i] == overflow and concrete['P3'][i] != overflow:
+        p3_filtered_concrete.Fill(concrete['P3'][i])
 
 for h in filtered_histograms:
     h.GetXaxis().SetTitle("Stop time #mus")

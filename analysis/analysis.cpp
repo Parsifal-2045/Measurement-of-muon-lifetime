@@ -34,12 +34,12 @@ void all_data_fit()
     TH1D *p3_iron = (TH1D *)file->Get("P3_iron");
     histograms[2] = p3_iron;
 
-    TH1D *p1_cement = (TH1D *)file->Get("P1_cement");
-    histograms[3] = p1_cement;
-    TH1D *p2_cement = (TH1D *)file->Get("P2_cement");
-    histograms[4] = p2_cement;
-    TH1D *p3_cement = (TH1D *)file->Get("P3_cement");
-    histograms[5] = p3_cement;
+    TH1D *p1_concrete = (TH1D *)file->Get("P1_concrete");
+    histograms[3] = p1_concrete;
+    TH1D *p2_concrete = (TH1D *)file->Get("P2_concrete");
+    histograms[4] = p2_concrete;
+    TH1D *p3_concrete = (TH1D *)file->Get("P3_concrete");
+    histograms[5] = p3_concrete;
 
     for (int i = 0; i != 6; i++)
     {
@@ -110,35 +110,35 @@ void all_data_fit()
     iron_canvas->Print("iron_fit.pdf");
 
     ////////////////////////////////////////////////
-    ////////////////// CEMENT //////////////////////
+    ///////////////// CONCRETE /////////////////////
     ////////////////////////////////////////////////
 
-    // P1 cement fit and parameters
-    p1_cement->Fit(simple_exp, "E,M,Q", "", 1, 12);
-    std::cout << red << "P1 Cement fit parameters:" << reset << '\n';
+    // P1 concrete fit and parameters
+    p1_concrete->Fit(simple_exp, "E,M,Q", "", 1, 12);
+    std::cout << red << "P1 concrete fit parameters:" << reset << '\n';
     std::cout << cyan << simple_exp->GetParameter(1) << " +/- " << simple_exp->GetParError(1) << '\n';
     std::cout << "chi2 / NDF: " << simple_exp->GetChisquare() << "/" << simple_exp->GetNDF() << reset << std::endl;
 
-    // P2 cement fit and parameters
-    p2_cement->Fit(simple_exp, "E,M,Q", "", 1, 12);
-    std::cout << red << "P2 Cement fit parameters:" << reset << '\n';
+    // P2 concrete fit and parameters
+    p2_concrete->Fit(simple_exp, "E,M,Q", "", 1, 12);
+    std::cout << red << "P2 concrete fit parameters:" << reset << '\n';
     std::cout << cyan << simple_exp->GetParameter(1) << " +/- " << simple_exp->GetParError(1) << '\n';
     std::cout << "chi2 / NDF: " << simple_exp->GetChisquare() << "/" << simple_exp->GetNDF() << reset << std::endl;
 
-    // P3 cement fit and parameters
-    p3_cement->Fit(simple_exp, "E,M,Q", "", 1, 12);
-    std::cout << red << "P3 Cement fit parameters:" << reset << '\n';
+    // P3 concrete fit and parameters
+    p3_concrete->Fit(simple_exp, "E,M,Q", "", 1, 12);
+    std::cout << red << "P3 concrete fit parameters:" << reset << '\n';
     std::cout << cyan << simple_exp->GetParameter(1) << " +/- " << simple_exp->GetParError(1) << '\n';
     std::cout << "chi2 / NDF: " << simple_exp->GetChisquare() << "/" << simple_exp->GetNDF() << reset << std::endl;
 
-    auto cement_canvas = new TCanvas("cement_canvas", "Cement Fit");
-    cement_canvas->SetCanvasSize(600, 800);
-    cement_canvas->Divide(1, 3);
+    auto concrete_canvas = new TCanvas("concrete_canvas", "concrete Fit");
+    concrete_canvas->SetCanvasSize(600, 800);
+    concrete_canvas->Divide(1, 3);
     int j = 1;
     for (int i = 3; i != 6; i++)
     {
 
-        cement_canvas->cd(j);
+        concrete_canvas->cd(j);
         gPad->SetLogy();
         gPad->Modified();
         histograms[i]->Draw("E,H");
@@ -146,26 +146,26 @@ void all_data_fit()
     }
     gPad->Update();
 
-    TPaveStats *stats_cement[3];
-    TPaveStats *st1_cement = (TPaveStats *)p1_cement->FindObject("stats");
-    stats_cement[0] = st1_cement;
-    st1_cement->SetName("p1_cement_stats");
-    TPaveStats *st2_cement = (TPaveStats *)p2_cement->FindObject("stats");
-    stats_cement[1] = st2_cement;
-    st2_cement->SetName("p2_cement_stats");
-    TPaveStats *st3_cement = (TPaveStats *)p3_cement->FindObject("stats");
-    stats_cement[2] = st3_cement;
-    st3_cement->SetName("p3_cement_stats");
+    TPaveStats *stats_concrete[3];
+    TPaveStats *st1_concrete = (TPaveStats *)p1_concrete->FindObject("stats");
+    stats_concrete[0] = st1_concrete;
+    st1_concrete->SetName("p1_concrete_stats");
+    TPaveStats *st2_concrete = (TPaveStats *)p2_concrete->FindObject("stats");
+    stats_concrete[1] = st2_concrete;
+    st2_concrete->SetName("p2_concrete_stats");
+    TPaveStats *st3_concrete = (TPaveStats *)p3_concrete->FindObject("stats");
+    stats_concrete[2] = st3_concrete;
+    st3_concrete->SetName("p3_concrete_stats");
     for (int i = 0; i != 3; i++)
     {
-        stats_cement[i]->SetX1NDC(0.581633);
-        stats_cement[i]->SetY1NDC(0.549202);
-        stats_cement[i]->SetX2NDC(0.89966);
-        stats_cement[i]->SetY2NDC(0.900266);
+        stats_concrete[i]->SetX1NDC(0.581633);
+        stats_concrete[i]->SetY1NDC(0.549202);
+        stats_concrete[i]->SetX2NDC(0.89966);
+        stats_concrete[i]->SetY2NDC(0.900266);
     }
 
-    cement_canvas->Print("cement_fit.pdf");
-    auto simple_exp_canvas = new TCanvas("simple_exp_canvas", "Fit iron and cement with a simple exponential");
+    concrete_canvas->Print("concrete_fit.pdf");
+    auto simple_exp_canvas = new TCanvas("simple_exp_canvas", "Fit iron and concrete with a simple exponential");
     simple_exp_canvas->Divide(3, 2);
 
     for (int i = 0; i != 6; i++)
@@ -200,11 +200,11 @@ void filtered_data_fit()
     TH1D *p3_filtered_iron = (TH1D *)file->Get("P3_filtered_iron");
     filtered_histograms[1] = p3_filtered_iron;
 
-    TH1D *p1_and_p2_cement = (TH1D *)file->Get("P2_filtered_cement");
-    filtered_histograms[2] = p1_and_p2_cement;
-    p1_and_p2_cement->SetTitle("P1 and P2 coincidences cement");
-    TH1D *p3_filtered_cement = (TH1D *)file->Get("P3_filtered_cement");
-    filtered_histograms[3] = p3_filtered_cement;
+    TH1D *p1_and_p2_concrete = (TH1D *)file->Get("P2_filtered_concrete");
+    filtered_histograms[2] = p1_and_p2_concrete;
+    p1_and_p2_concrete->SetTitle("P1 and P2 coincidences concrete");
+    TH1D *p3_filtered_concrete = (TH1D *)file->Get("P3_filtered_concrete");
+    filtered_histograms[3] = p3_filtered_concrete;
     for (int i = 0; i != 4; i++)
     {
         filtered_histograms[i]->GetXaxis()->SetTitle("Stop time (#mus)");
@@ -250,38 +250,38 @@ void filtered_data_fit()
     }
 
     ////////////////////////////////////////////////
-    ////////////////// CEMENT //////////////////////
+    ///////////////// CONCRETE /////////////////////
     ////////////////////////////////////////////////
 
-    // P1 and P2 coincidences cement fit and parameters
-    p1_and_p2_cement->Fit(simple_exp, "E,M,Q", "", 0.5, 12.9);
-    std::cout << red << "P1 and P2 coincidences Cement fit parameters:" << reset << '\n';
+    // P1 and P2 coincidences concrete fit and parameters
+    p1_and_p2_concrete->Fit(simple_exp, "E,M,Q", "", 0.5, 12.9);
+    std::cout << red << "P1 and P2 coincidences concrete fit parameters:" << reset << '\n';
     std::cout << cyan << simple_exp->GetParameter(1) << " +/- " << simple_exp->GetParError(1) << '\n';
     std::cout << "chi2 / NDF: " << simple_exp->GetChisquare() << "/" << simple_exp->GetNDF() << reset << std::endl;
 
-    // P3 filtered cement fit and parameters
-    p3_filtered_cement->Fit(simple_exp, "E,M,Q", "", 1, 12);
-    std::cout << red << "Filtered P3 Cement fit parameters:" << reset << '\n';
+    // P3 filtered concrete fit and parameters
+    p3_filtered_concrete->Fit(simple_exp, "E,M,Q", "", 1, 12);
+    std::cout << red << "Filtered P3 concrete fit parameters:" << reset << '\n';
     std::cout << cyan << simple_exp->GetParameter(1) << " +/- " << simple_exp->GetParError(1) << '\n';
     std::cout << "chi2 / NDF: " << simple_exp->GetChisquare() << "/" << simple_exp->GetNDF() << reset << std::endl;
 
-    TPaveStats *stats_cement[2];
-    TPaveStats *st1_cement = (TPaveStats *)p1_and_p2_cement->FindObject("stats");
-    stats_cement[0] = st1_cement;
-    st1_cement->SetName("p1_and_p2_cement_stats");
-    TPaveStats *st3_cement = (TPaveStats *)p3_filtered_cement->FindObject("stats");
-    stats_cement[1] = st3_cement;
-    st3_cement->SetName("p3_filtered_cement_stats");
+    TPaveStats *stats_concrete[2];
+    TPaveStats *st1_concrete = (TPaveStats *)p1_and_p2_concrete->FindObject("stats");
+    stats_concrete[0] = st1_concrete;
+    st1_concrete->SetName("p1_and_p2_concrete_stats");
+    TPaveStats *st3_concrete = (TPaveStats *)p3_filtered_concrete->FindObject("stats");
+    stats_concrete[1] = st3_concrete;
+    st3_concrete->SetName("p3_filtered_concrete_stats");
     for (int i = 0; i != 2; i++)
     {
-        stats_cement[i]->SetX1NDC(0.582544);
-        stats_cement[i]->SetY1NDC(0.545131);
-        stats_cement[i]->SetX2NDC(0.901034);
-        stats_cement[i]->SetY2NDC(0.901298);
+        stats_concrete[i]->SetX1NDC(0.582544);
+        stats_concrete[i]->SetY1NDC(0.545131);
+        stats_concrete[i]->SetX2NDC(0.901034);
+        stats_concrete[i]->SetY2NDC(0.901298);
     }
 
     // Visualize all histograms
-    auto filtered_canvas = new TCanvas("filtered_canvas", "Filtered iron and cement fit with a simple exponential");
+    auto filtered_canvas = new TCanvas("filtered_canvas", "Filtered iron and concrete fit with a simple exponential");
     filtered_canvas->Divide(2, 2);
     for (int i = 0; i != 4; i++)
     {
@@ -297,18 +297,18 @@ void filtered_data_fit()
         filtered_histograms[i]->Draw("E,H");
     }
 
-    auto cement_filtered_canvas = new TCanvas("cement_filtered_canvas", "Cement filtered fit - simple exponential");
-    cement_filtered_canvas->Divide(1, 2);
+    auto concrete_filtered_canvas = new TCanvas("concrete_filtered_canvas", "concrete filtered fit - simple exponential");
+    concrete_filtered_canvas->Divide(1, 2);
     int j = 1;
     for (int i = 2; i != 4; i++)
     {
-        cement_filtered_canvas->cd(j);
+        concrete_filtered_canvas->cd(j);
         filtered_histograms[i]->Draw("E,H");
         j++;
     }
 
     iron_filtered_canvas->Print("iron_filtered_fit.pdf");
-    cement_filtered_canvas->Print("cement_filtered_fit.pdf");
+    concrete_filtered_canvas->Print("concrete_filtered_fit.pdf");
 }
 
 void advanced_fit()
@@ -334,11 +334,11 @@ void advanced_fit()
     TH1D *p3_filtered_iron = (TH1D *)file->Get("P3_filtered_iron");
     filtered_histograms[1] = p3_filtered_iron;
 
-    TH1D *p1_and_p2_cement = (TH1D *)file->Get("P2_filtered_cement");
-    filtered_histograms[2] = p1_and_p2_cement;
-    p1_and_p2_cement->SetTitle("P1 and P2 coincidences cement");
-    TH1D *p3_filtered_cement = (TH1D *)file->Get("P3_filtered_cement");
-    filtered_histograms[3] = p3_filtered_cement;
+    TH1D *p1_and_p2_concrete = (TH1D *)file->Get("P2_filtered_concrete");
+    filtered_histograms[2] = p1_and_p2_concrete;
+    p1_and_p2_concrete->SetTitle("P1 and P2 coincidences concrete");
+    TH1D *p3_filtered_concrete = (TH1D *)file->Get("P3_filtered_concrete");
+    filtered_histograms[3] = p3_filtered_concrete;
     for (int i = 0; i != 4; i++)
     {
         filtered_histograms[i]->GetXaxis()->SetTitle("Stop time (#mus)");
@@ -384,38 +384,38 @@ void advanced_fit()
     }
 
     ////////////////////////////////////////////////
-    ////////////////// CEMENT //////////////////////
+    ///////////////// CONCRETE /////////////////////
     ////////////////////////////////////////////////
 
-    // P1 and P2 coincidences cement fit and parameters
-    p1_and_p2_cement->Fit(adv_exp, "E,M,Q", "", 0.1, 12);
-    std::cout << red << "P1 and P2 coincidences Cement fit parameters with 1/R fit:" << reset << '\n';
+    // P1 and P2 coincidences concrete fit and parameters
+    p1_and_p2_concrete->Fit(adv_exp, "E,M,Q", "", 0.1, 12);
+    std::cout << red << "P1 and P2 coincidences concrete fit parameters with 1/R fit:" << reset << '\n';
     std::cout << cyan << adv_exp->GetParameter(1) << " +/- " << adv_exp->GetParError(1) << '\n';
     std::cout << "chi2 / NDF: " << adv_exp->GetChisquare() << "/" << adv_exp->GetNDF() << reset << std::endl;
 
-    // P3 filtered cement fit and parameters
-    p3_filtered_cement->Fit(adv_exp, "E,M,Q", "", 0.1, 12);
-    std::cout << red << "Filtered P3 Cement fit parameters with 1/R fit:" << reset << '\n';
+    // P3 filtered concrete fit and parameters
+    p3_filtered_concrete->Fit(adv_exp, "E,M,Q", "", 0.1, 12);
+    std::cout << red << "Filtered P3 concrete fit parameters with 1/R fit:" << reset << '\n';
     std::cout << cyan << adv_exp->GetParameter(1) << " +/- " << adv_exp->GetParError(1) << '\n';
     std::cout << "chi2 / NDF: " << adv_exp->GetChisquare() << "/" << adv_exp->GetNDF() << reset << std::endl;
 
-    TPaveStats *stats_cement[2];
-    TPaveStats *st1_cement = (TPaveStats *)p1_and_p2_cement->FindObject("stats");
-    stats_cement[0] = st1_cement;
-    st1_cement->SetName("p1_and_p2_cement_stats");
-    TPaveStats *st3_cement = (TPaveStats *)p3_filtered_cement->FindObject("stats");
-    stats_cement[1] = st3_cement;
-    st3_cement->SetName("p3_filtered_cement_stats");
+    TPaveStats *stats_concrete[2];
+    TPaveStats *st1_concrete = (TPaveStats *)p1_and_p2_concrete->FindObject("stats");
+    stats_concrete[0] = st1_concrete;
+    st1_concrete->SetName("p1_and_p2_concrete_stats");
+    TPaveStats *st3_concrete = (TPaveStats *)p3_filtered_concrete->FindObject("stats");
+    stats_concrete[1] = st3_concrete;
+    st3_concrete->SetName("p3_filtered_concrete_stats");
     for (int i = 0; i != 2; i++)
     {
-        stats_cement[i]->SetX1NDC(0.582544);
-        stats_cement[i]->SetY1NDC(0.545131);
-        stats_cement[i]->SetX2NDC(0.901034);
-        stats_cement[i]->SetY2NDC(0.901298);
+        stats_concrete[i]->SetX1NDC(0.582544);
+        stats_concrete[i]->SetY1NDC(0.545131);
+        stats_concrete[i]->SetX2NDC(0.901034);
+        stats_concrete[i]->SetY2NDC(0.901298);
     }
 
     // Visualize all histograms
-    auto filtered_canvas = new TCanvas("filtered_canvas", "Filtered iron and cement fit with with 1/R exponential");
+    auto filtered_canvas = new TCanvas("filtered_canvas", "Filtered iron and concrete fit with with 1/R exponential");
     filtered_canvas->Divide(2, 2);
     for (int i = 0; i != 4; i++)
     {
@@ -431,16 +431,16 @@ void advanced_fit()
         filtered_histograms[i]->Draw("E,H");
     }
 
-    auto cement_filtered_canvas = new TCanvas("cement_filtered_canvas", "Cement filtered - 1/R exponential fit");
-    cement_filtered_canvas->Divide(1, 2);
+    auto concrete_filtered_canvas = new TCanvas("concrete_filtered_canvas", "concrete filtered - 1/R exponential fit");
+    concrete_filtered_canvas->Divide(1, 2);
     int j = 1;
     for (int i = 2; i != 4; i++)
     {
-        cement_filtered_canvas->cd(j);
+        concrete_filtered_canvas->cd(j);
         filtered_histograms[i]->Draw("E,H");
         j++;
     }
 
     iron_filtered_canvas->Print("1_over_r_iron_fit.pdf");
-    cement_filtered_canvas->Print("1_over_r_cement_fit.pdf");
+    concrete_filtered_canvas->Print("1_over_r_concrete_fit.pdf");
 }
