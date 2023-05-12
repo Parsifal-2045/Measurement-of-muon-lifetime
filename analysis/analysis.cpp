@@ -60,21 +60,12 @@ void all_data_fit()
 
     // P1 iron fit and parameters
     p1_iron->Fit(simple_exp, "E,M,Q", "", 1, 12);
-    std::cout << red << "P1 Iron fit parameters:" << reset << '\n';
-    std::cout << cyan << simple_exp->GetParameter(1) << " +/- " << simple_exp->GetParError(1) << '\n';
-    std::cout << "chi2 / NDF: " << simple_exp->GetChisquare() << "/" << simple_exp->GetNDF() << reset << std::endl;
 
     // P2 iron fit and parameters
     p2_iron->Fit(simple_exp, "E,M,Q", "", 1, 12);
-    std::cout << red << "P2 Iron fit parameters:" << reset << '\n';
-    std::cout << cyan << simple_exp->GetParameter(1) << " +/- " << simple_exp->GetParError(1) << '\n';
-    std::cout << "chi2 / NDF: " << simple_exp->GetChisquare() << "/" << simple_exp->GetNDF() << reset << std::endl;
 
     // P3 iron fit and parameters
     p3_iron->Fit(simple_exp, "E,M,Q", "", 0.5, 10);
-    std::cout << red << "P3 Iron fit parameters:" << reset << '\n';
-    std::cout << cyan << simple_exp->GetParameter(1) << " +/- " << simple_exp->GetParError(1) << '\n';
-    std::cout << "chi2 / NDF: " << simple_exp->GetChisquare() << " / " << simple_exp->GetNDF() << reset << std::endl;
 
     auto iron_canvas = new TCanvas("iron_canvas", "Iron Fit");
     iron_canvas->SetCanvasSize(600, 800);
@@ -115,21 +106,12 @@ void all_data_fit()
 
     // P1 concrete fit and parameters
     p1_concrete->Fit(simple_exp, "E,M,Q", "", 1, 12);
-    std::cout << red << "P1 concrete fit parameters:" << reset << '\n';
-    std::cout << cyan << simple_exp->GetParameter(1) << " +/- " << simple_exp->GetParError(1) << '\n';
-    std::cout << "chi2 / NDF: " << simple_exp->GetChisquare() << "/" << simple_exp->GetNDF() << reset << std::endl;
 
     // P2 concrete fit and parameters
     p2_concrete->Fit(simple_exp, "E,M,Q", "", 1, 12);
-    std::cout << red << "P2 concrete fit parameters:" << reset << '\n';
-    std::cout << cyan << simple_exp->GetParameter(1) << " +/- " << simple_exp->GetParError(1) << '\n';
-    std::cout << "chi2 / NDF: " << simple_exp->GetChisquare() << "/" << simple_exp->GetNDF() << reset << std::endl;
 
     // P3 concrete fit and parameters
     p3_concrete->Fit(simple_exp, "E,M,Q", "", 1, 12);
-    std::cout << red << "P3 concrete fit parameters:" << reset << '\n';
-    std::cout << cyan << simple_exp->GetParameter(1) << " +/- " << simple_exp->GetParError(1) << '\n';
-    std::cout << "chi2 / NDF: " << simple_exp->GetChisquare() << "/" << simple_exp->GetNDF() << reset << std::endl;
 
     auto concrete_canvas = new TCanvas("concrete_canvas", "concrete Fit");
     concrete_canvas->SetCanvasSize(600, 800);
@@ -223,16 +205,10 @@ void filtered_data_fit()
     ////////////////////////////////////////////////
 
     // P1 and P2 coincidences iron fit and parameters
-    p1_and_p2_iron->Fit(simple_exp, "E,M,Q", "", 1.1, 10);
-    std::cout << red << "P1 and P2 coincidences Iron fit parameters:" << reset << '\n';
-    std::cout << cyan << simple_exp->GetParameter(1) << " +/- " << simple_exp->GetParError(1) << '\n';
-    std::cout << "chi2 / NDF: " << simple_exp->GetChisquare() << "/" << simple_exp->GetNDF() << reset << std::endl;
+    p1_and_p2_iron->Fit(simple_exp, "E,M,Q", "", 1, 12);
 
     // P3 filtered iron fit and parameters
-    p3_filtered_iron->Fit(simple_exp, "E,M,Q", "", 0.5, 8);
-    std::cout << red << "Filtered P3 Iron fit parameters:" << reset << '\n';
-    std::cout << cyan << simple_exp->GetParameter(1) << " +/- " << simple_exp->GetParError(1) << '\n';
-    std::cout << "chi2 / NDF: " << simple_exp->GetChisquare() << " / " << simple_exp->GetNDF() << reset << std::endl;
+    p3_filtered_iron->Fit(simple_exp, "E,M,Q", "", 1, 12);
 
     TPaveStats *stats_iron[2];
     TPaveStats *st1_iron = (TPaveStats *)p1_and_p2_iron->FindObject("stats");
@@ -254,16 +230,10 @@ void filtered_data_fit()
     ////////////////////////////////////////////////
 
     // P1 and P2 coincidences concrete fit and parameters
-    p1_and_p2_concrete->Fit(simple_exp, "E,M,Q", "", 0.5, 12.9);
-    std::cout << red << "P1 and P2 coincidences concrete fit parameters:" << reset << '\n';
-    std::cout << cyan << simple_exp->GetParameter(1) << " +/- " << simple_exp->GetParError(1) << '\n';
-    std::cout << "chi2 / NDF: " << simple_exp->GetChisquare() << "/" << simple_exp->GetNDF() << reset << std::endl;
+    p1_and_p2_concrete->Fit(simple_exp, "E,M,Q", "", 1, 12);
 
     // P3 filtered concrete fit and parameters
     p3_filtered_concrete->Fit(simple_exp, "E,M,Q", "", 1, 12);
-    std::cout << red << "Filtered P3 concrete fit parameters:" << reset << '\n';
-    std::cout << cyan << simple_exp->GetParameter(1) << " +/- " << simple_exp->GetParError(1) << '\n';
-    std::cout << "chi2 / NDF: " << simple_exp->GetChisquare() << "/" << simple_exp->GetNDF() << reset << std::endl;
 
     TPaveStats *stats_concrete[2];
     TPaveStats *st1_concrete = (TPaveStats *)p1_and_p2_concrete->FindObject("stats");
@@ -358,15 +328,9 @@ void advanced_fit()
 
     // P1 and P2 coincidences iron fit and parameters
     p1_and_p2_iron->Fit(adv_exp, "E,M,Q", "", 0.07, 8);
-    std::cout << red << "P1 and P2 coincidences Iron fit parameters with 1/R fit:" << reset << '\n';
-    std::cout << cyan << adv_exp->GetParameter(1) << " +/- " << adv_exp->GetParError(1) << '\n';
-    std::cout << "chi2 / NDF: " << adv_exp->GetChisquare() << "/" << adv_exp->GetNDF() << reset << std::endl;
 
     // P3 filtered iron fit and parameters
     p3_filtered_iron->Fit(adv_exp, "E,M,Q", "", 0.07, 8);
-    std::cout << red << "Filtered P3 Iron fit parameters with 1/R fit:" << reset << '\n';
-    std::cout << cyan << adv_exp->GetParameter(1) << " +/- " << adv_exp->GetParError(1) << '\n';
-    std::cout << "chi2 / NDF: " << adv_exp->GetChisquare() << " / " << adv_exp->GetNDF() << reset << std::endl;
 
     TPaveStats *stats_iron[2];
     TPaveStats *st1_iron = (TPaveStats *)p1_and_p2_iron->FindObject("stats");
@@ -389,15 +353,9 @@ void advanced_fit()
 
     // P1 and P2 coincidences concrete fit and parameters
     p1_and_p2_concrete->Fit(adv_exp, "E,M,Q", "", 0.1, 12);
-    std::cout << red << "P1 and P2 coincidences concrete fit parameters with 1/R fit:" << reset << '\n';
-    std::cout << cyan << adv_exp->GetParameter(1) << " +/- " << adv_exp->GetParError(1) << '\n';
-    std::cout << "chi2 / NDF: " << adv_exp->GetChisquare() << "/" << adv_exp->GetNDF() << reset << std::endl;
 
     // P3 filtered concrete fit and parameters
     p3_filtered_concrete->Fit(adv_exp, "E,M,Q", "", 0.1, 12);
-    std::cout << red << "Filtered P3 concrete fit parameters with 1/R fit:" << reset << '\n';
-    std::cout << cyan << adv_exp->GetParameter(1) << " +/- " << adv_exp->GetParError(1) << '\n';
-    std::cout << "chi2 / NDF: " << adv_exp->GetChisquare() << "/" << adv_exp->GetNDF() << reset << std::endl;
 
     TPaveStats *stats_concrete[2];
     TPaveStats *st1_concrete = (TPaveStats *)p1_and_p2_concrete->FindObject("stats");
@@ -443,4 +401,133 @@ void advanced_fit()
 
     iron_filtered_canvas->Print("1_over_r_iron_fit.pdf");
     concrete_filtered_canvas->Print("1_over_r_concrete_fit.pdf");
+}
+
+void fixed_lifetime_fit()
+{
+    // console colours
+    const std::string red("\033[0;31m");
+    const std::string cyan("\033[0;36m");
+    const std::string reset("\033[0m");
+
+    // style
+    gStyle->SetOptTitle(1);
+    gStyle->SetOptStat(1110);
+    gStyle->SetOptFit(111);
+    gStyle->SetLineScalePS(1);
+
+    // retrieve histograms
+    TFile *file = new TFile("filtered_data.root", "READ");
+    TH1D *filtered_histograms[4];
+
+    TH1D *p1_and_p2_iron = (TH1D *)file->Get("P2_filtered_iron");
+    filtered_histograms[0] = p1_and_p2_iron;
+    p1_and_p2_iron->SetTitle("P1 and P2 coincidences iron");
+    TH1D *p3_filtered_iron = (TH1D *)file->Get("P3_filtered_iron");
+    filtered_histograms[1] = p3_filtered_iron;
+
+    TH1D *p1_and_p2_concrete = (TH1D *)file->Get("P2_filtered_concrete");
+    filtered_histograms[2] = p1_and_p2_concrete;
+    p1_and_p2_concrete->SetTitle("P1 and P2 coincidences concrete");
+    TH1D *p3_filtered_concrete = (TH1D *)file->Get("P3_filtered_concrete");
+    filtered_histograms[3] = p3_filtered_concrete;
+    for (int i = 0; i != 4; i++)
+    {
+        filtered_histograms[i]->GetXaxis()->SetTitle("Stop time (#mus)");
+        filtered_histograms[i]->GetXaxis()->SetTitleSize(0.045);
+        filtered_histograms[i]->GetYaxis()->SetTitle("Counts");
+        filtered_histograms[i]->GetYaxis()->SetTitleSize(0.045);
+    }
+
+    // 1/R exponential -> free parameters: N(u+, 0), lifetime, charge rate R, capture time, background
+    auto adv_exp = new TF1("adv_exp", "[0]*TMath::Exp(-x/[1])*(1 + 1/[2]*TMath::Exp(-x/[3])) + [4]");
+    adv_exp->SetParNames("N(#mu^{+}, 0)", "#tau_{0}", "R", "#tau_{c}", "b");
+
+    ////////////////////////////////////////////////
+    /////////////////// IRON ///////////////////////
+    ////////////////////////////////////////////////
+
+    // P1 and P2 coincidences iron fit and parameters
+    adv_exp->SetParameters(300, 2, 1, 0.2, 6);
+    adv_exp->FixParameter(1, 2.197);
+    p1_and_p2_iron->Fit(adv_exp, "E,M,Q", "", 0.07, 10);
+
+    // P3 filtered iron fit and parameters
+    adv_exp->SetParameters(300, 2, 1, 0.2, 6);
+    adv_exp->FixParameter(1, 2.197);
+    p3_filtered_iron->Fit(adv_exp, "E,M,Q", "", 0.07, 10);
+
+    TPaveStats *stats_iron[2];
+    TPaveStats *st1_iron = (TPaveStats *)p1_and_p2_iron->FindObject("stats");
+    stats_iron[0] = st1_iron;
+    st1_iron->SetName("p1_and_p2_iron_stats");
+    TPaveStats *st3_iron = (TPaveStats *)p3_filtered_iron->FindObject("stats");
+    stats_iron[1] = st3_iron;
+    st3_iron->SetName("p3_filtered_iron_stats");
+    for (int i = 0; i != 2; i++)
+    {
+        stats_iron[i]->SetX1NDC(0.582544);
+        stats_iron[i]->SetY1NDC(0.545131);
+        stats_iron[i]->SetX2NDC(0.901034);
+        stats_iron[i]->SetY2NDC(0.901298);
+    }
+
+    ////////////////////////////////////////////////
+    ///////////////// CONCRETE /////////////////////
+    ////////////////////////////////////////////////
+
+    // P1 and P2 coincidences concrete fit and parameters
+    adv_exp->SetParameters(300, 2, 1, 1, 6);
+    adv_exp->FixParameter(1, 2.197);
+    p1_and_p2_concrete->Fit(adv_exp, "E,M,Q", "", 0.1, 12);
+
+    // P3 filtered concrete fit and parameters
+    adv_exp->SetParameters(300, 2, 1, 1, 6);
+    adv_exp->FixParameter(1, 2.197);
+    p3_filtered_concrete->Fit(adv_exp, "E,M,V", "", 0.1, 12);
+
+    TPaveStats *stats_concrete[2];
+    TPaveStats *st1_concrete = (TPaveStats *)p1_and_p2_concrete->FindObject("stats");
+    stats_concrete[0] = st1_concrete;
+    st1_concrete->SetName("p1_and_p2_concrete_stats");
+    TPaveStats *st3_concrete = (TPaveStats *)p3_filtered_concrete->FindObject("stats");
+    stats_concrete[1] = st3_concrete;
+    st3_concrete->SetName("p3_filtered_concrete_stats");
+    for (int i = 0; i != 2; i++)
+    {
+        stats_concrete[i]->SetX1NDC(0.582544);
+        stats_concrete[i]->SetY1NDC(0.545131);
+        stats_concrete[i]->SetX2NDC(0.901034);
+        stats_concrete[i]->SetY2NDC(0.901298);
+    }
+
+    // Visualize all histograms
+    auto filtered_canvas = new TCanvas("filtered_canvas", "Filtered iron and concrete fit with with 1/R exponential");
+    filtered_canvas->Divide(2, 2);
+    for (int i = 0; i != 4; i++)
+    {
+        filtered_canvas->cd(i + 1);
+        filtered_histograms[i]->Draw("E,H");
+    }
+
+    auto iron_filtered_canvas = new TCanvas("iron_filtered_canvas", "Iron filtered fit - 1/R exponential fit");
+    iron_filtered_canvas->Divide(1, 2);
+    for (int i = 0; i != 2; i++)
+    {
+        iron_filtered_canvas->cd(i + 1);
+        filtered_histograms[i]->Draw("E,H");
+    }
+
+    auto concrete_filtered_canvas = new TCanvas("concrete_filtered_canvas", "concrete filtered - 1/R exponential fit");
+    concrete_filtered_canvas->Divide(1, 2);
+    int j = 1;
+    for (int i = 2; i != 4; i++)
+    {
+        concrete_filtered_canvas->cd(j);
+        filtered_histograms[i]->Draw("E,H");
+        j++;
+    }
+
+    iron_filtered_canvas->Print("fixed_lifetime_fit_iron.pdf");
+    concrete_filtered_canvas->Print("fixed_lifetime_fit_concrete.pdf");
 }
