@@ -1,0 +1,69 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Setup Calibration}
+
+\subsection{Chamber Working Points}
+\label{subsec:chambercalibration}
+In order to perform the experiment, it is mandatory to find optimal working points for the chambers. The variables to optimise are the voltage and the threshold at which the two PMTs in the plane work: the former influencing the gain of the PMTs while the latter moderates dark current effects introduced by high working voltage. The 3B group performed the calibration of the P3 chamber, its PMTs being 03 and 04. Calibration of 01, 02, 11, 12 PMTs were performed by the 1B and 2B groups respectively.\\
+
+The calibration is performed with the following procedure. A logical AND of the 2 PMTs in the reference plane (P1) is implemented. The output is connected to 2 other AND gates, each one taking as the other input the signal of each PMT under study, these being called Coincidence Counts. Also counts directly out of each PMT were registered, these called Single Counts. For each voltage and threshold the setup registers counts for a fixed time of 100\,s and the counts (both Single PMT-A,B and Coincidence PMT-A,B) are registered. For each sweep across any configuration a working plateau-like region is expected for the coincidence counts.\\
+
+In order to realise the circuit described in the previous paragraph the signal of the PMTs, digitised by the LED which also controls the threshold of the signals, is sent into a CAEN N455 Quad Coincidence Logic Unit producing the 3 required ANDs. Furthermore, to obtain the counts, the signals are sent to a CAEN N1145 Quad Scaler. This unit has a clock that can be used to consistently measure how many events are registered in standard time windows. The unit presents 4 displays, showing the counts in each one of the 4 channels, namely the single PMT-A,B and their AND coincidence with the reference plane. Finally, via the GECO software it is possible to perform a scan of the powering voltages. During this scan the reference chamber is set at \SI{1000}{\volt} with a \SI{40}{\milli \volt} threshold. After the voltage scan, the threshold scan is performed modifying the threshold of the signals in the LED unit. In this case the reference chamber is set to \SI{1000}{\volt} with a \SI{2}{\milli \volt} threshold in order to achieve maximum sensitivity during the scan.\\
+
+The results of the scans for coincidence counts of the 3 planes are shown in Figure \ref{fig:hvthr}, where the uncertainties are given by the resolution of the threshold in the LED unit while on poissonian counts the associated uncertainty is the square root of the counts themselves. From the observed behaviours, the settings of all the chambers were decided to be at a tension of \SI{1050}{\volt} with LED threshold at \SI{30}{\milli \volt}. These settings, despite being apparently allowed by the scans, resulted in some difficulties which are adressed in Section \ref{sec:res}.
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width = \linewidth]{images/hv-thr.pdf}
+    \caption[High Voltage and Threshold scans for scintillating planes]{High Voltage and Threshold scans for scintillating planes. From these behaviours working points have been decided to be at \SI{1050}{\volt} for high voltage and \SI{30}{\milli \volt} for threshold.}
+    \label{fig:hvthr}
+\end{figure}
+
+\subsection{Background and Efficiency Measurement} \label{subsec:bkg}
+Another important step of the calibration is the proper estimation of expected background, since in some cases it can lead to wrong results, if not treated correctly.
+
+An estimate of the background can be obtained constructing a circuit such that the trigger is given by the CAEN N93B Dual Timer module. As such, the trigger window gets opened by the dual timer module and not by the proper passing of a real muon. In this way stop signals will be randomly collected from stops in the chambers not related to a decay in the absorber, thus creating the shape of the expected background. Unfortunately, due to time constraints the setup did not have enough time to collect a sample large enough for the proper estimation of the expected background, also in part due to the choice of a low acquisition rate dictated by the technical limitations of the PC acquiring the data. On the other hand, the background behaviour can be estimated from the collected data leaving it as a free parameter in the final fit.
+
+Moreover, an efficiency measurement has been performed for the three chambers, despite it not having applications in the remaining of the experiment. To perform the efficiency measurement of a chamber, the chamber under analysis would be stacked between the other two chambers. The digitised signals of the top and bottom chambers, taken as reference, get combined into a logic AND. Another logic AND gets realised using the output of all three chambers. Using the counts given by the CAEN N1145 Quad Coincidence Unit it was possible to obtain an estimate of the efficiency of the chambers above 95\% for each one of them. Efficiency measurements are shown in Table \ref{tab:efficiencies}.
+
+\subsection{Time Calibration}
+The objective of the experiment is getting a time measurement of the lifetime of the muon. The experimental setup expresses time counts as clock cycles, which require proper treatment in order to be compared with standard units of measure. In order to do this one PMT signal from P1 and P2 have been substituted with fake signals generated with the CAEN N93B Dual Timer which should emulate a valid trigger from a passing muon in P1, P2 and finally stopping in the absorber, between P2 and P3, starting the clock. After the first counter, a second one is initiated, emulating an electron passing shortly after in all 3 chambers, substituting the signal of the 2 remaining PMTs in P1 and P2 and one from P3, finally stopping the counter. The veto has been left untouched from the background measurement rack configuration, while the AND gates between PMT signals have been switched to OR gates. 
+
+As in the previous paragraph, due to technical limitations in the acquisition rate of the PC, muon signals have been set at a rate of 10\,Hz. Furthermore, due to the Dual Timer module not being correctly calibrated, the times between the fake muon trigger and the fake electron stop have been separately measured using the oscilloscope, which provides on its own an uncertainty on the measure. The uncertainty on the measured number of clock cycles has been taken as the standard deviation between $\approx$1000 measures for each measured stopping time value. Calibration results are shown in Figure \ref{fig:timeCalibration}, which shows a complete agreement between the time measures for all 3 channels, leading to a conversion factor of 3.98(0)\,ns per clock cycle.
+
+\begin{figure}[htb!]%
+ \centering
+ \subfloat[]{\includegraphics[width=0.7\linewidth]{images/calib_plane_1.pdf}}\\%{images/calib_plane_1.pdf}\label{fig:a}}
+ \subfloat[]{\includegraphics[width=0.7\linewidth]{images/calib_plane_2.pdf}}\\
+ \subfloat[]{\includegraphics[width=0.7\linewidth]{images/calib_plane_3.pdf}}%
+ \caption[Time calibration]{Time calibration for the different chambers. In the fit p0 refers to the slope of the line and p1 to the y-intercept. All measures give a compatible clock-time conversion factor of \textnormal{3.98(0)}\,\si{\nano \second}\textnormal{/clock cycle}.}%
+ \label{fig:timeCalibration}%
+\end{figure}
+
+\subsection{Signal Width Setting}
+Another important step of the configuration is choosing the optimal signal width of the LED output. For example, the trigger implemented in the experiment, previously introduced in Subsection \ref{sub:detector}, works with a P1\,$\land$\,P2\,$\land$\,$\overline{\textnormal{P3}}$ logic, shown in Figure \ref{fig:TriggerLogic}. Clearly, if the P3 signal is not long enough it may lead to erroneous triggers as shown in Figure \ref{fig:wrongTrigger}. For this reason, the P3 signal has been chosen to be $\approx$80 ns wide,  while P1 and P2 were set at around $\approx$45 ns.
+
+\begin{figure}[hbt!]
+   \centering
+    \input{images/exp-app}
+    \caption{Logic circuit of the experimental setup. Both the trigger and the acquisition logic are displayed.}
+    \label{fig:TriggerLogic}
+\end{figure}
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=0.8 \linewidth]{images/wrongtrigger.jpg}
+    \caption{Trigger (4) activates because P3 (3) signal is not long enough to veto. Elongating P3 to switch on before and finish after P1 and P2 is an easy fix to make the system work correctly.}
+    \label{fig:wrongTrigger}
+\end{figure}
+
+%\caption{Time calibration for the different chambers.}
+%\label{fig:timeCalibration}
+
+
+
+
+\end{document}
+
+\clearpage

@@ -1,0 +1,63 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Introduction}
+\label{sec:intro}
+The muon is a charged particle discovered in the late 30s \cite{street1937new}. Its discovery was not highly anticipated by theoretical models like all the particles that were discovered since then. Nowadays, it is included in the Standard Model as the charged particle of the second leptonic generation and its properties are known up to  high precision. Currently, the best measurement for its mass is \mbox{$m_\mu=105.65837(45)$\,Mev$/c^2$} and for its mean lifetime is \mbox{$\tau_\mu=2.19698(11)$\,\unit{\micro \second}} \cite{Workman2022ynf}. The main decay channel of the negative muon, shown in Figure \ref{fig:feynman}, makes it decay into an electron and electronic antineutrino, plus a muon neutrino (for positive muons all the decay products become their respective $\mathcal{CP}$-conjugates) according to (\ref{eq:muDecay}).
+\begin{equation}
+    \mu^- (\mu^+)\to e^-  \bar{\nu}_e \nu_\mu (e^+  \nu_e \bar{\nu}_\mu)
+    \label{eq:muDecay}
+\end{equation}
+The majority of primary cosmic rays is composed of charged atomic nuclei spanning from hydrogen to iron which, interacting with Earth's atmosphere, give rise to hadronic cosmic ray showers. In hadronic cosmic ray showers, mesons are produced as part of the secondary cosmic radiation. These mesons happen to decay weakly into muons, as shown in Figure \ref{fig:feynman}, or strongly into other mesons, leading in any case to high percentages of muonic final states, as shown in (\ref{eq:piDecay}) and (\ref{eq:kDecay}) \cite{Workman2022ynf}.
+\begin{alignat}{4}
+    &\Gamma(\pi^\pm \to \mu^\pm + \nu_\mu(\bar{\nu}_\mu))&/ \Gamma_{\pi \text{-tot}}&\approx100&\% \label{eq:piDecay}\\
+    &\Gamma(K^\pm \to ... \to \mu^\pm + \text{anything})&/ \Gamma_{K\text{-tot}}&\approx \phantom{1}95&\% \label{eq:kDecay}
+\end{alignat}
+
+Despite being produced at heights of $\approx$15\,km in the atmosphere, muons are easily detected at sea level due to their low energy transfer and to relativistic time dilation. Constructing the setup in an environment with several metres of concrete on top, (the laboratory being placed at ground floor of a multi-storey building) ensures also protection from other components of the secondary cosmic showers like neutrons or electrons/positrons, allowing the assumption of dealing with almost pure showers of $\mu^\pm$ during the analysis.\\
+
+Nowadays, studies on muons are becoming more and more relevant, both for fundamental studies (muon g-2 anomaly \cite{keshavarzi2022muon}), astroparticle physics observations \cite{ahlen1993muon}, muon tomography applications \cite{checchia2016review} and for research in the particle physics energy frontier \cite{delahaye2019muon}, therefore it is very important to be able to treat them properly, both at laboratory and analysis level.
+
+\begin{figure}[ht]
+	\centering
+    \begin{tikzpicture}
+        \begin{feynman}
+            \vertex (a) {\(\mu^{-}\)};
+            \vertex [right=of a] (b);
+            \vertex [above right=of b] (f1) {\(\nu_{\mu}\)};
+            \vertex [right=of b] (c);
+            \vertex [above right=of c] (f2) {\(\overline \nu_{e}\)};
+            \vertex [below right=of c] (f3) {\(e^{-}\)};
+            \diagram* {
+                (a) -- [fermion] (b) -- [fermion] (f1),
+                (b) -- [boson, edge label'=\(W^{-}\)] (c),
+                (c) -- [anti fermion] (f2),
+                (c) -- [fermion] (f3),
+            };
+        \end{feynman}
+        \label{fig:feynmana}
+    \end{tikzpicture}\hspace{0.4cm}
+    \begin{tikzpicture}
+        \begin{feynman}       
+            \vertex (b);
+            \vertex [above left=of b](a) {\(u\)};
+            \vertex [below left=of b] (c) {\(\overline d\)};
+            \vertex [right=of b] (d);
+            \vertex [above right=of d] (e) {\(\mu^{+}\)};
+            \vertex [below right=of d] (f) {\(\nu_{\mu}\)};
+            \diagram* {
+                (a) -- [fermion] (b) -- [fermion] (c),
+                (b) -- [boson, edge label'=\(W^{+}\)] (d),
+                (e) -- [fermion] (d) -- [fermion] (f),
+            };
+            
+        \end{feynman}
+        \label{fig:feynmanb}
+    \end{tikzpicture}
+    \caption[Muon and Pion decay]{Feynman diagrams of the main decay channels of the $\mu^-$ and of the $\pi^+$.}
+    \label{fig:feynman}
+\end{figure}
+
+\end{document}
+
+\clearpage

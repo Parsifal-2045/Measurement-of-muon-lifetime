@@ -1,0 +1,66 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Experimental Setup}
+The purpose of the experiment is the estimation of the lifetime of the muon, via the determination of the time elapsed between the passage of a muon and its decay. In order to perform this measurement an appropriate experimental setup has been devised. For the full list of used instrumentation check Appendix \ref{appendix:instruments}.
+
+
+\subsection{Muon Chambers}
+The experimental setup is composed of 3 chambers (P1, P2, P3) with a surface of \mbox{$\approx$\SI{600}{\centi \metre^2}} and a thickness of $\approx$\SI{2.5}{\centi \metre}. %CHECK LATER
+Each chamber is composed of 2 plastic scintillator planes joint in the middle. At the opposite sides of the chambers 2 Hamamatsu H316504 photomultipliers (PMTs) are placed, coupled to the scintillating planes. PMTs are powered by a NIM power supply unit, controlled by the CAEN GEneral COntrol (GECO) software. Both the PMTs on the same plane are powered by a single cable, therefore working at the same settings. The output signal of each PMT is carried to the rack via 50\,$\Omega$ LEMO coaxial cables, each of them introducing delays in the order of nanoseconds depending on the length of the used cable. The render of a chamber is shown in Figure \ref{fig:chamber}.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.5 \linewidth]{images/chamber.png} \hspace{0.3 cm}
+    \includegraphics[width=0.3 \linewidth]{images/chamber3.png}
+    \caption{Schematics of the chamber and PMT details.}
+    \label{fig:chamber}
+\end{figure}
+
+\subsection{Signal Processing and Data Acquisition}
+All signals require later processing according to the proper purposes that have to be carried out, later discussed in the relevant sections. Since the output of the PMT is an analogue signal the use of a CAEN N840 8-Channel Leading Edge Discriminator (LED) for the conversion into a digital signal will be assumed throughout all the following discussions.
+
+Another important step in the signal processing requires the use of logic AND ($\land$) and OR ($\lor$) operations. In order to achieve this CAEN N455 Quad Coincidence Logic Unit and CAEN N405 3 Fold Logic Unit have been used, typically the first one for outputs of the PMTs, the second instead for logic operations on the outputs of the previous unit.
+
+For generation of time signals the CAEN N93B Dual Timer unit has been used, in particular for the time calibration of the setup and for background measurement.
+
+For the search of working points of the chambers, efficiency measurements and preliminary measurements the CAEN N1145 Quad Scaler and Preset Counter Timer unit has been used. In particular this unit allows to take 8-digits counts on up to 4 channels in specified and consistent time windows with up to \unit{\micro \second} resolution.
+
+For trigger purposes and appropriate circuit response/data taking to compensate for different delays in different channels the CAEN N108A Dual Delay could provide up to \mbox{$\approx$64\,ns} of delay.
+
+Figure \ref{fig:rack} shows the rack during data taking.\\
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.7 \linewidth]{images/rack.jpg}
+    \caption{Rack during data taking.}
+    \label{fig:rack}
+\end{figure}
+
+After exiting from the rack, signals are either transferred to an RS PRO IDS1104B Digital Oscilloscope, which can provide information on height and width of signals on up to 4 channels or to a Digilent Cmod Spartan-7 FPGA containing a code for data acquisition into text (\texttt{.txt}) files saved into the laboratory PC. The FPGA features 4 connectors to the setup, one for the trigger and 3 for the three acquisition channels given by the 3 chambers. The output files will feature three values for each triggered event, each value being a stop time, expressed in clock cycles, one for each one of the three chambers. 
+
+\subsection{Detector}
+\label{sub:detector}
+In order for the system to observe a muon decay, some things have to be taken into account.
+
+Firstly, muons may cross a plate from different directions and different muon traces may overlap. In order to reduce these problems, two chambers are put on top of one another. For data taking, a trigger has been constructed and the first action it performs is to check whether both chambers signalled the passage of a muon.
+
+Furthermore since the interest lies in observing the decay of the muon it is important to remove events in which muons crossed the full detector without decaying. For this purpose the third chamber, placed below the other two chambers, acts as a veto on the aforementioned trigger.
+
+Finally, when looking at the physics of the processes described in Section  \ref{sec:intro} cosmic muons are expected to be emitted in the $10^2-$\SI{e5}{\MeV} energy range, while for what concerns the processes described in (\ref{eq:muDecay}) the electron is expected to be emitted in the \SI{30}{MeV} energy range. In order to slow down the muon, it is necessary to add an absorber between chambers so that the muon can lose enough energy to slow down and decay, while at the same time allowing the daughter electron to escape the decay region reaching the detection region. A fine compromise between the two things is using an absorber in which a \SI{30}{\MeV} electron has a high enough probability to escape. Taking into account also cost constraints, a \SI{1}{cm} iron absorber plate was used. Future modifications to the setup may also include the introduction of a magnetic field for the identification of the charge of passing particles. For this reason also a \SI{4}{\centi \meter} concrete absorber has been tested as iron by virtues of being ferromagnetic would have problems working in a magnetic field.\\
+
+
+\noindent For the previously discussed reasons the detector has been constructed as shown in Figure \ref{fig:setUp}.
+
+\begin{figure}[htb]
+    \centering
+    \input{images/detector_design}
+    \includegraphics[width = 0.4 \linewidth]{images/setup.jpg}
+    \caption{Detector schematics and mounted experiment with concrete absorber.}
+    \label{fig:setUp}
+\end{figure}
+
+
+\end{document}
+
+\clearpage
