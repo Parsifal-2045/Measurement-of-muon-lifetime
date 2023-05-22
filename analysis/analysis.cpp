@@ -44,9 +44,10 @@ void all_data_fit()
     for (int i = 0; i != 6; i++)
     {
         histograms[i]->GetXaxis()->SetTitle("Stop time (#mus)");
-        histograms[i]->GetXaxis()->SetTitleSize(0.045);
+        histograms[i]->GetXaxis()->SetTitleSize(0.05);
         histograms[i]->GetYaxis()->SetTitle("Counts");
-        histograms[i]->GetYaxis()->SetTitleSize(0.045);
+        histograms[i]->GetYaxis()->SetTitleSize(0.05);
+        histograms[i]->GetYaxis()->SetTitleOffset(0.9);
     }
 
     // simple exponential - free parameters: N(u, 0), lifetime and background
@@ -190,9 +191,10 @@ void filtered_data_fit()
     for (int i = 0; i != 4; i++)
     {
         filtered_histograms[i]->GetXaxis()->SetTitle("Stop time (#mus)");
-        filtered_histograms[i]->GetXaxis()->SetTitleSize(0.045);
+        filtered_histograms[i]->GetXaxis()->SetTitleSize(0.05);
         filtered_histograms[i]->GetYaxis()->SetTitle("Counts");
-        filtered_histograms[i]->GetYaxis()->SetTitleSize(0.045);
+        filtered_histograms[i]->GetYaxis()->SetTitleSize(0.005);
+        filtered_histograms[i]->GetYaxis()->SetTitleOffset(0.9);
     }
 
     // simple exponential - free parameters: N(u, 0), lifetime and background
@@ -312,9 +314,10 @@ void advanced_fit()
     for (int i = 0; i != 4; i++)
     {
         filtered_histograms[i]->GetXaxis()->SetTitle("Stop time (#mus)");
-        filtered_histograms[i]->GetXaxis()->SetTitleSize(0.045);
+        filtered_histograms[i]->GetXaxis()->SetTitleSize(0.05);
         filtered_histograms[i]->GetYaxis()->SetTitle("Counts");
-        filtered_histograms[i]->GetYaxis()->SetTitleSize(0.045);
+        filtered_histograms[i]->GetYaxis()->SetTitleSize(0.05);
+        filtered_histograms[i]->GetYaxis()->SetTitleOffset(0.9);
     }
 
     // 1/R exponential -> free parameters: N(u+, 0), lifetime, charge rate R, capture time, background
@@ -434,9 +437,10 @@ void fixed_lifetime_fit()
     for (int i = 0; i != 4; i++)
     {
         filtered_histograms[i]->GetXaxis()->SetTitle("Stop time (#mus)");
-        filtered_histograms[i]->GetXaxis()->SetTitleSize(0.045);
+        filtered_histograms[i]->GetXaxis()->SetTitleSize(0.05);
         filtered_histograms[i]->GetYaxis()->SetTitle("Counts");
-        filtered_histograms[i]->GetYaxis()->SetTitleSize(0.045);
+        filtered_histograms[i]->GetYaxis()->SetTitleSize(0.05);
+        filtered_histograms[i]->GetYaxis()->SetTitleOffset(0.9);
     }
 
     // 1/R exponential -> free parameters: N(u+, 0), lifetime, charge rate R, capture time, background

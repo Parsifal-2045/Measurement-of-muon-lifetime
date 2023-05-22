@@ -81,9 +81,23 @@ if check_afterpulses == True:
         if concrete['P1'][i] != 4095 and concrete['P2'][i] != 4095 and concrete['P3'][i] == 4095:
             ibin_p1_and_p2_concrete.Fill(concrete['P2'][i])
 
+    ibin_stats = []
+    l_index = 0
     for h in ibinshistos:
         h.GetXaxis().SetTitle("Clock ticks")
         h.GetYaxis().SetTitle("Counts")
+        h.GetXaxis().SetTitleSize(0.045)
+        h.GetYaxis().SetTitleSize(0.045)
+        h.GetYaxis().SetTitleOffset(1.1)
+        h.Draw()
+        gPad.Update()
+        ibin_stats.append(h.FindObject("stats"))
+        ibin_stats[l_index].SetX1NDC(0.589033)
+        ibin_stats[l_index].SetY1NDC(0.582562)
+        ibin_stats[l_index].SetX2NDC(0.899507)
+        ibin_stats[l_index].SetY2NDC(0.900463)
+        gPad.Update()
+        l_index += 1
 
     first_150_bin_canvas = ROOT.TCanvas(
         "first_150_iron", "First 150 bins of iron planes", 1400, 700)
@@ -147,9 +161,23 @@ for i in range(len(concrete['P1'])):
     if concrete['P3'][i] != overflow:
         p3_concrete.Fill(concrete['P3'][i])
 
+hist_stats = []
+l_index = 0
 for h in histograms:
     h.GetXaxis().SetTitle("Stop time #mus")
     h.GetYaxis().SetTitle("Counts")
+    h.GetXaxis().SetTitleSize(0.05)
+    h.GetYaxis().SetTitleSize(0.05)
+    h.GetYaxis().SetTitleOffset(0.9)
+    h.Draw()
+    gPad.Update()
+    hist_stats.append(h.FindObject("stats"))
+    hist_stats[l_index].SetX1NDC(0.589033)
+    hist_stats[l_index].SetY1NDC(0.582562)
+    hist_stats[l_index].SetX2NDC(0.899507)
+    hist_stats[l_index].SetY2NDC(0.900463)
+    gPad.Update()
+    l_index += 1
 
 # display raw histograms
 canvas = ROOT.TCanvas("canvas", "Histograms not filtered", 1400, 700)
@@ -197,9 +225,23 @@ for i in range(len(concrete['P1'])):
     if concrete['P1'][i] == overflow and concrete['P2'][i] == overflow and concrete['P3'][i] != overflow:
         p3_filtered_concrete.Fill(concrete['P3'][i])
 
+filtered_hist_stat = []
+l_index = 0
 for h in filtered_histograms:
     h.GetXaxis().SetTitle("Stop time #mus")
     h.GetYaxis().SetTitle("Counts")
+    h.GetXaxis().SetTitleSize(0.05)
+    h.GetYaxis().SetTitleSize(0.05)
+    h.GetYaxis().SetTitleOffset(0.9)
+    h.Draw()
+    gPad.Update()
+    filtered_hist_stat.append(h.FindObject("stats"))
+    filtered_hist_stat[l_index].SetX1NDC(0.589033)
+    filtered_hist_stat[l_index].SetY1NDC(0.582562)
+    filtered_hist_stat[l_index].SetX2NDC(0.899507)
+    filtered_hist_stat[l_index].SetY2NDC(0.900463)
+    gPad.Update()
+    l_index += 1
 
 # display filtered histograms
 filtered_canvas = ROOT.TCanvas(
