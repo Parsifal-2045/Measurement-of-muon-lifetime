@@ -20,6 +20,23 @@ Nowadays, studies on muons are becoming more and more relevant, both for fundame
 
 \begin{figure}[ht]
 	\centering
+     \begin{tikzpicture}
+        \begin{feynman}       
+            \vertex (b);
+            \vertex [above left=of b](a) {\(u\)};
+            \vertex [below left=of b] (c) {\(\overline d\)};
+            \vertex [right=of b] (d);
+            \vertex [above right=of d] (e) {\(\mu^{+}\)};
+            \vertex [below right=of d] (f) {\(\nu_{\mu}\)};
+            \diagram* {
+                (a) -- [fermion] (b) -- [fermion] (c),
+                (b) -- [boson, edge label'=\(W^{+}\)] (d),
+                (e) -- [fermion] (d) -- [fermion] (f),
+            };
+            
+        \end{feynman}
+        \label{fig:feynmanb}
+    \end{tikzpicture}\hspace{0.4cm}
     \begin{tikzpicture}
         \begin{feynman}
             \vertex (a) {\(\mu^{-}\)};
@@ -36,25 +53,8 @@ Nowadays, studies on muons are becoming more and more relevant, both for fundame
             };
         \end{feynman}
         \label{fig:feynmana}
-    \end{tikzpicture}\hspace{0.4cm}
-    \begin{tikzpicture}
-        \begin{feynman}       
-            \vertex (b);
-            \vertex [above left=of b](a) {\(u\)};
-            \vertex [below left=of b] (c) {\(\overline d\)};
-            \vertex [right=of b] (d);
-            \vertex [above right=of d] (e) {\(\mu^{+}\)};
-            \vertex [below right=of d] (f) {\(\nu_{\mu}\)};
-            \diagram* {
-                (a) -- [fermion] (b) -- [fermion] (c),
-                (b) -- [boson, edge label'=\(W^{+}\)] (d),
-                (e) -- [fermion] (d) -- [fermion] (f),
-            };
-            
-        \end{feynman}
-        \label{fig:feynmanb}
     \end{tikzpicture}
-    \caption[Muon and Pion decay]{Feynman diagrams of the main decay channels of the $\mu^-$ and of the $\pi^+$.}
+    \caption[Pion and Muon decay]{Feynman diagrams of the main decay channels of the $\pi^+$ and of the $\mu^-$.}
     \label{fig:feynman}
 \end{figure}
 
