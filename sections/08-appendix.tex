@@ -44,7 +44,7 @@ Software:
 \section{Data and Tables}
 %\addcontentsline{toc}{subsection}{Setup Measurements}
 \subsection{Setup Measurements}
-\noindent Reference chambers calibration counts taken from the shared folder.
+\noindent Reference planes calibration counts taken from the shared folder.
 \FloatBarrier
 
     %HV 1B, HV 2B, HV 3B, THR 1B, THR 2B, THR 3B
@@ -185,12 +185,12 @@ Software:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
         \begin{table}[ht]
             \centering
-            \caption{Measured chamber efficiencies}
+            \caption{Measured plane efficiencies}
             \label{tab:efficiencies}
                 \resizebox{\textwidth}{!}{%
                 \begin{tabular}{|c|c|c|c|}
                 \hline
-                \multicolumn{1}{|l|}{Chamber} &
+                \multicolumn{1}{|l|}{Plane} &
                   \multicolumn{1}{l|}{Triple coincidence counts (Trip)} &
                   \multicolumn{1}{l|}{Reference Counts (Ref)} &
                   \multicolumn{1}{l|}{Efficiency (Trip/Ref)} \\ \hline
@@ -245,11 +245,10 @@ During data analysis some decisions were taken regarding binning and fitting ran
 
 For what concerns binning, since the events featuring a stop were in the order of $10^4$ a good bin choice was thought to be around $10^2$. Moreover, the overflow stop time was \texttt{0xfff}, meaning $16^3=4096$ possible stop times. This led to opting for 128 bins, meaning every bin would include 32 different clock cycle values. For consistency, it was decided to not modify binning settings under any circumstance.\\
 
-As far as fit ranges are concerned, the situation initially appeared more problematic due to the contamination of the first bins, which actually are the ones containing the important statistics, especially when searching for $\tau_C$. However, in this case too, the guideline was trying to not change fit ranges after performing the fit unless the data analysis struggled: either failing to perform the fit or moving too far from the allowed regions. Fortunately, the latter did not happen and only convergence of the fit issues were faced. In any case it was decided that, when fitting the same function for the pairs of data sets (P1$\land$P2, P3), the ranges had to remain the same in order to avoid influencing the results. This approach later allowed to combine fit results without introducing biases.\\
+As far as fit ranges are concerned, the situation initially appeared more problematic due to the contamination of the first bins, which actually are the ones containing the important statistics, especially when searching for $\tau_C$. However, in this case too, the guideline was trying to not change fit ranges after performing the fit unless the data analysis struggled: either failing to perform the fit or moving too far from the allowed regions. Fortunately, none of these issues were faced with the chosen ranges. In any case it was decided that, when fitting the same function for the pairs of data sets (P1$\land$P2, P3), the ranges had to remain the same in order to avoid influencing the results. This approach later allowed to combine fit results without introducing biases.\\
 
-Taking into account the muon capture rate effects, for the simple exponential fit the start of the fitting region was chosen to be somewhat close to the starting of the data at \texttt{0x000} but far enough for a mitigation of $\tau_C$ effects and contamination effects. A valid compromise was found starting the fitting region at 1\,\si{\micro \second}. The end of the fitting region was decided to be put far enough to allow for proper background measurement and in a region in which the exponential curve was suppressed enough, finally opting for the 12\,\si{\micro \second} mark. For consistency, this choice was tried also for the second fit model. However, since the relevant behaviours were expected at low timescales the starting region was chosen to be at most on the second 32-cycles bin. While proceeding smoothly on the concrete for either the 5 parameters and the 4 parameters fit (All and Constrained of Subsection \ref{subsec:fitting}), the program struggled for what concerned the iron data, probably due to the lower value of $\tau_C$. Therefore, different end values were experimented, reducing at each try by 2\,\si{\micro \second}. Following this procedure, the constrained fit converged on the first modification at 10\,\si{\micro \second} mark, while the 5 parameters iron-absorber fit needed a further reduction to 8\,\si{\micro \second} before reaching convergence.\\
+Taking into account the muon capture rate effects, for the simple exponential fit the start of the fitting region was chosen to be somewhat close to the starting of the data at \texttt{0x000} but far enough for a mitigation of $\tau_C$ effects and contamination effects. A valid compromise was found starting the fitting region at 400\,\si{\nano \second} and 1\,\si{\micro \second} for iron and concrete absorber, respectively. The end of the fitting region was decided to be put far enough to allow for proper background measurement and in a region in which the exponential curve was suppressed enough, finally opting for the 16\,\si{\micro \second} mark. For consistency, this choice was tried also for the second fit model. However, since the relevant behaviours were expected at low timescales the starting region was chosen to be at most on the second 32-cycles bin, while the end was kept consistent with the first fitting model allowing for a better estimate of background.
 
 Despite some manipulations, the authors feel that implementing this procedure did not introduce a too large bias in the final results, having made many of the fit choices before actually seeing fit results. For the future maybe some ways to implement a blind analysis of the data may be found, further reducing possible biases.
-
 \end{document}
 
